@@ -104,12 +104,25 @@ type
     dateFinishPolis: time_type;
   end;
 
+  type
+    allElementType = record
+      elementAppointments:appointments;
+      elemtntDoctor:doctorType;
+      elementPatient:patientType;
+    end;
+
 type                              // i need to finish it
   appointmentArr = array [1..nmax] of appointments;
 type
   doctorTypeArr = array [1..nmax] of doctorType;
 type
   patientTypeArr = array [1..nmax] of patientType;
+type
+  allArray = record
+    arrElementAppointment:appointmentArr;
+    arrElementDoctor:doctorTypeArr;
+    arrElemtntPatient:patientTypeArr;
+  end;
 
 type
   addDoctorData = object Name: string
@@ -214,31 +227,6 @@ var
       end;
     until (not error);
   end;
-
-  //procedure TestNumber(var Number: integer; var CountMax:integer; message: message_string);
-  ////Подпрограмма проверяет правильность ввода
-  //var
-  //  error: boolean;
-  //begin
-  //  TextBackground(0);
-  //  TextColor(7);
-  //  repeat
-  //    error := False;
-  //    gotoxy(one, twentyseven);
-  //    Write(message);
-  //    Number := CheckNumberCabinet;
-  //    gotoxy(one, twentyeight);
-  //    clreol;
-  //    gotoxy(one, twentyseven);
-  //    clreol;
-  //    if (Number < one) or (Number > CountMax) then
-  //    begin
-  //      gotoxy(one, twentyeight);
-  //      Write('Вы ввели некорректное число. Попробуйте снова.');
-  //      error := True;
-  //    end;
-  //  until (not error);
-  //end;
 
   function checkfiodoc: mystring;
     //Функция для проверки ввода ФИО через readkey, где
@@ -382,6 +370,9 @@ var
     clreol;
   end;
 
+
+     //case Key of
+     //     chr(80):
   function Checktypeapp: mystring;
     //Функция для проверки ввода типа приема через readkey
     //symbol - счетчик
@@ -536,7 +527,69 @@ var
     CheckSpecialty := typeapp;
   end;
 
-  procedure Testtypeapp(var typeapp: mystring; message: message_string);
+
+procedure TestFIODoctor(var typeapp: mystring; message: message_string);
+ //Подпрограмма проверяет правильность ввода фамилии
+ //i,j - счетчики
+ //error - наличие ошибки
+ //message - строка на вывод}
+ var
+   error: boolean;
+ begin
+   repeat
+     TextBackground(0);
+     TextColor(7);
+     error := False;
+     gotoxy(one, twentyseven);
+     Write(message);
+     typeapp := Checktypeapp;
+     gotoxy(one, twentyseven);
+     clreol;
+   until (not error);
+   gotoxy(one, twentyeight);
+   clreol;
+ end;
+
+procedure TestFIOThtid(var typeapp: mystring; count: integer;
+   var p3: patientType; var a3: patientTypeArr);
+ //Подпрограмма проверяет правильность ввода фамилии
+ //i,j - счетчики
+ //error - наличие ошибки
+ //message - строка на вывод}
+ var
+   error: boolean;
+ begin
+     typeapp := a3[count].surname + ' ' + a3[count].Name+ ' '
+     + a3[count].patronymic;
+   gotoxy(one, twentyeight);
+   clreol;
+ end;
+   procedure TestFIOThrid(var typeapp: mystring; count: integer;
+    var p2: patientType; var a2: patientTypeArr);
+  //Подпрограмма проверяет правильность ввода фамилии
+  //i,j - счетчики
+  //error - наличие ошибки
+  //message - строка на вывод}
+  begin
+      typeapp := a2[count].surname + ' ' + a2[count].Name+ ' '
+      + a2[count].patronymic;
+    gotoxy(one, twentyeight);
+    clreol;
+  end;
+  procedure TestFIOSecond(var typeapp: mystring; count: integer;
+    var p3: doctorType; var a3: doctorTypeArr);
+  //Подпрограмма проверяет правильность ввода фамилии
+  //i,j - счетчики
+  //error - наличие ошибки
+  //message - строка на вывод}
+  begin
+      typeapp := a3[count].surname + ' ' + a3[count].Name+ ' '
+      + a3[count].patronymic;
+    gotoxy(one, twentyeight);
+    clreol;
+  end;
+
+procedure Testtypeapp(var typeapp: mystring; message: message_string);
   //Подпрограмма проверяет правильность ввода фамилии
   //i,j - счетчики
   //error - наличие ошибки
@@ -1677,6 +1730,118 @@ var
     Write('I');
   end;
 
+procedure ViewSecondTableNotNull(var a2: doctorTypeArr; var itemPage, itemPageMax: integer);
+ //Вывод результатов в первую таблицу
+ var
+   Count: integer;
+   i: integer;
+   newX: integer;
+ begin
+   Count := 0;
+   x := homeX;
+   y := homeY;
+   newX := x;
+
+   for i := itemPage to itemPageMax do
+   begin
+     with a2[i] do
+     begin
+       gotoxy(x, y);
+       if (Name <> '') then  //пустая ячейка
+       begin
+       Write(Name);
+       y := y + cell_height;
+       end
+       //переход на следующую ячейку снизу
+     end;
+   end;
+
+   x := x + cell_width;
+   //переход на следующую ячейку по горизонтали
+   y := homeY;
+   newX := x;
+   for i := itemPage to itemPageMax do
+   begin
+     with a2[i] do
+     begin
+       gotoxy(x, y);
+       if (surname <> '') then //пустая ячейка
+       begin
+       Write(surname);
+
+       gotoXY(x, y);
+       y := y + cell_height;
+       end;
+       //переход на следующую ячейку снизу
+     end;
+   end;
+
+   x := x + cell_width;
+   //переход на следующую ячейку по горизонтали
+   y := homeY;
+   for i := itemPage to itemPageMax do
+   begin
+     with a2[i] do
+     begin
+       gotoxy(x, y);
+       if (patronymic <> '') then  //пустая ячейка
+       begin
+       Write(patronymic);
+       y := y + cell_height;
+       end;
+       //переход на следующую ячейку снизу
+     end;
+   end;
+   x := x + cell_width;
+   //переход на следующую ячейку по горизонтали
+   y := homeY;
+   for i := itemPage to itemPageMax do
+   begin
+     with a2[i] do
+     begin
+       gotoxy(x, y);
+       if (specialty <> '') then //пустая ячейка
+       begin
+       Write(specialty);
+       y := y + cell_height;
+       end;
+       //переход на следующую ячейку снизу
+     end;
+   end;
+   x := x + cell_width;
+   //переход на следующую ячейку по горизонтали
+   y := homeY;
+   for i := itemPage to itemPageMax do
+   begin
+     with a2[i] do
+     begin
+       gotoxy(x, y);
+       if (nemberCabinet <> 0) then //пустая ячейка
+       begin
+       Write(nemberCabinet);
+       y := y + cell_height;
+       end;
+       //переход на следующую ячейку снизу
+     end;
+   end;
+   x := 91;
+   y := 4;
+   for i := itemPage to itemPageMax do
+   begin
+     gotoxy(x, y);
+     with a2[i] do
+     if (nemberCabinet <> 0) then //пустая ячейка
+     begin
+     Write(i);
+     y := y + cell_height;
+     end;
+     //переход на следующую ячейку снизу
+   end;
+
+   gotoxy(92, 2);
+   Write('II');
+ end;
+
   procedure ViewSecondTable(var a2: doctorTypeArr; var itemPage, itemPageMax: integer);
   //Вывод результатов в первую таблицу
   var
@@ -1776,6 +1941,129 @@ var
     Write('II');
   end;
 
+  procedure ViewThirdTableNotNull(var a3: patientTypeArr; var itemPage, itemPageMax: integer);
+  //Вывод результатов в первую таблицу
+  var
+    i: integer;
+  begin
+    x := homeX;
+    y := homeY;
+    for i := itemPage to itemPageMax do
+    begin
+      with a3[i] do
+      begin
+        gotoxy(x, y);
+        if (Name <> '') then  //пустая ячейка
+        begin
+        Write(Name);
+        y := y + cell_height;
+        end;
+        //переход на следующую ячейку снизу
+      end;
+    end;
+
+    x := x + cell_width;
+    //переход на следующую ячейку по горизонтали
+    y := homeY;
+    for i := itemPage to itemPageMax do
+    begin
+      with a3[i] do
+      begin
+        gotoxy(x, y);
+        if (surname <> '') then //пустая ячейка
+        begin
+        Write(surname);
+        y := y + cell_height;
+        end
+        //переход на следующую ячейку снизу
+      end;
+    end;
+
+    x := x + cell_width;
+    //переход на следующую ячейку по горизонтали
+    y := homeY;
+    for i := itemPage to itemPageMax do
+    begin
+      with a3[i] do
+      begin
+        gotoxy(x, y);
+        if (patronymic <> '') then  //пустая ячейка
+        begin
+        Write(patronymic);
+        y := y + cell_height;
+        end;
+        //переход на следующую ячейку снизу
+      end;
+    end;
+
+    x := x + cell_width;
+    //переход на следующую ячейку по горизонтали
+    y := homeY;
+    for i := itemPage to itemPageMax do
+    begin
+      with a3[i] do
+      begin
+        gotoxy(x, y);
+        if (addres <> '') then  //пустая ячейка
+        begin
+        Write(addres);
+        y := y + cell_height;
+        end;
+        //переход на следующую ячейку снизу
+      end;
+    end;
+
+    x := x + cell_width;
+    //переход на следующую ячейку по горизонтали
+    y := homeY;
+    for i := itemPage to itemPageMax do
+    begin
+      with a3[i] do
+      begin
+        gotoxy(x, y);
+        if (numberPolis <> 0) then  //пустая ячейка
+        begin
+        Write(numberPolis);
+        y := y + cell_height;
+        end;
+        //переход на следующую ячейку снизу
+      end;
+    end;
+
+    x := x + cell_width;
+    //переход на следующую ячейку по горизонтали
+    y := homeY;
+    for i := itemPage to itemPageMax do
+    begin
+      with a3[i] do
+      begin
+        gotoxy(x, y);
+        if (numberPolis <> 0) then  //пустая ячейка
+        begin
+        Write(dateFinishPolis.hour, ':', dateFinishPolis.minute);
+        y := y + cell_height;
+        end;
+        //переход на следующую ячейку снизу
+      end;
+    end;
+
+    x := 111;
+    y := 4;
+    for i := itemPage to itemPageMax do
+    begin
+      with a3[i] do
+      if (numberPolis <> 0) then  //пустая ячейка
+        begin
+        gotoxy(x, y);
+      Write(i);
+      y := y + cell_height;
+      end;
+      //переход на следующую ячейку снизу
+    end;
+
+    gotoxy(111, 2);
+    Write('I');
+  end;
   procedure ViewThirdTable(var a3: patientTypeArr; var itemPage, itemPageMax: integer);
   //Вывод результатов в первую таблицу
   var
@@ -1884,7 +2172,9 @@ var
     Write('I');
   end;
 
-  procedure WriteappointmentArr(var p: appointments; var a: appointmentArr);
+  procedure WriteappointmentArr(var p: appointments; var a: appointmentArr;
+    var p2: doctorType; var a2:doctorTypeArr;
+    var p3: patientType; var  patientTypeArr);
   //Подпрограмма ввода массива данными о приеме врачей
   //i,j - счетчики
   //  number - кол-во приемов
@@ -1892,7 +2182,7 @@ var
   //  a - массив приемов
   var
     error: boolean;
-    i: integer;
+    i, count: integer;
     numberMin, numberMax, CountMax: integer;
   begin
     CountMax := 2;
@@ -1912,8 +2202,20 @@ var
           TestTime(timestart);
           TestTime(timefinish);
           TestTypeapp(typeapp, 'Введите тип приема:  ');
-          TestFioDoc(fiodoc, ' Введите ФИО врача: ');
-          TestFioPat(fiopat, ' Введите ФИО пациента: ');
+          clrscr;
+          SecondFrameTable;
+          ViewSecondTableNotNull(a2, itemPage, itemPageMax);
+          TestNumber(numberMin, CountMax,
+        'Введите значение элемента, с которого хотите начать ввод/замену: ');
+          TestFIOSecond(fiodoc, numberMin, p2, a2);
+          //TestFioDoc();
+          clrscr;
+          ThirdFrameTable;
+          ViewThirdTableNotNull(a3, itemPage, itemPageMax);
+          TestNumber(numberMin, CountMax,
+        'Введите значение элемента, с которого хотите начать ввод/замену: ');
+          TestFIOThrid(fiopat, numberMin, p3, a3);
+
           writeln(' ');
         end;
     until (not error);
@@ -2120,7 +2422,7 @@ var
   procedure MenuFirstTable(var Key: char; var x, y: integer;
     {Процедура для передвижения и выбора места записи}
   var StringNumber, RowsNumber, pagenumber, itemPage, itemPageMax: integer;
-  var p: appointments; var a: appointmentArr);
+  var p: appointments; var a: appointmentArr; var p2: doctorType; var a2: doctorTypeArr);
  {Key-код нажатия клавиши
   x,y-координаты}
   var
@@ -2189,19 +2491,21 @@ var
           end;
           chr(59):  //F1   - Добавить значение
           begin
-            WriteappointmentArr(p, a);
-            gotoxy(one, twentyeight);
-            Write(
-              ' Обновите таблицу путем выхода через esc и входом обратно');
-            gotoxy(x, y);
+            WriteappointmentArr(p, a, p2, a2, p3, a3);
+            clrscr;
+            ViewFirstTable(a, itemPage, itemPageMax);
+    FirstFrameTable;
+    MenuFirstTable(Key, x, y, StringNumber, RowsNumber, pagenumber,
+      itemPage, itemPageMax, p, a, p2, a2);
           end;
           chr(60):  //F2 - Изменить значение
           begin
             ChangeappointmentArr(p, a);
-            gotoxy(one, twentyeight);
-            Write(
-              ' Обновите таблицу путем выхода через esc и входом обратно');
-            gotoxy(x, y);
+            clrscr;
+            ViewFirstTable(a, itemPage, itemPageMax);
+    FirstFrameTable;
+    MenuFirstTable(Key, x, y, StringNumber, RowsNumber, pagenumber,
+      itemPage, itemPageMax, p, a, p2, a2);
           end;
           chr(61):  //F3 - Удаление значения
           begin
@@ -2211,10 +2515,10 @@ var
             gotoxy(1, 60);
             clreol;
             DeleteappointmentArr(p, a, number);
-            gotoxy(1, 60);
-            Write(
-              ' Обновите таблицу путем выхода через esc и входом обратно');
-            gotoxy(x, y);
+            ViewFirstTable(a, itemPage, itemPageMax);
+            FirstFrameTable;
+            MenuFirstTable(Key, x, y, StringNumber, RowsNumber, pagenumber,
+      itemPage, itemPageMax, p, a, p2, a2);
           end;
           chr(81):  //PageDown - Переход по страницам (след.)
           begin
@@ -2227,7 +2531,7 @@ var
               FirstFrameTable;
               ViewFirstTable(a, itemPage, itemPageMax);
               MenuFirstTable(Key, x, y, StringNumber, RowsNumber,
-                pagenumber, itemPage, itemPageMax, p, a);
+                pagenumber, itemPage, itemPageMax, p, a, p2, a2);
             end;
           end;
           chr(73):  //PageUp - Переход по страницам (пред.)
@@ -2241,17 +2545,17 @@ var
               FirstFrameTable;
               ViewFirstTable(a, itemPage, itemPageMax);
               MenuFirstTable(Key, x, y, StringNumber, RowsNumber,
-                pagenumber, itemPage, itemPageMax, p, a);
+                pagenumber, itemPage, itemPageMax, p, a, p2, a2);
             end;
           end;
           chr(8): //BackSpace - удаление по стрелкам
           begin
             i := (StringNumber + itempage) - one;
             DeleteappointmentArr(p, a, i);
-            gotoxy(one, twentyeight);
-            Write(
-              ' Обновите таблицу путем выхода через esc и входом обратно');
-            gotoxy(x, y);
+            ViewFirstTable(a, itemPage, itemPageMax);
+            FirstFrameTable;
+            MenuFirstTable(Key, x, y, StringNumber, RowsNumber, pagenumber,
+      itemPage, itemPageMax, p, a, p2, a2);
           end;
         end;
       end
@@ -2419,9 +2723,11 @@ var
       begin
         i := (StringNumber + itempage) - 1;
         DeleteappointmentArr(p, a, i);
-        gotoxy(1, twentyeight);
-        Write(' Обновите таблицу путем выхода через esc и входом обратно');
-        gotoxy(x, y);
+        clrscr;
+        ViewFirstTable(a, itemPage, itemPageMax);
+    FirstFrameTable;
+    MenuFirstTable(Key, x, y, StringNumber, RowsNumber, pagenumber,
+      itemPage, itemPageMax, p, a, p2, a2);
       end;
     until Key = chr(9);  //twentyseven
     x := HomeX;
@@ -2501,17 +2807,18 @@ var
           chr(59):  //F1   - Добавить значение
           begin
             WriteaDoctorArr(p2, a2);
-            gotoxy(one, twentyeight);
-            Write(
-              ' Обновите таблицу путем выхода через esc и входом обратно');
-            gotoxy(x, y);
+            ViewSecondTable(a2, itemPage, itemPageMax);
+            SecondFrameTable;
+            MenuSecondTable(Key, x, y, StringNumber, RowsNumber, pagenumber,
+      itemPage, itemPageMax, p2, a2);
           end;
           chr(60):  //F2 - Изменить значение
           begin
-            //ChangeappointmentArr(p, a);
-            //gotoxy(one, twentyeight);
-            //Write(' Обновите таблицу путем выхода через esc и входом обратно');
-            //gotoxy(x, y);
+            ChangeappointmentArr(p, a);
+            ViewSecondTable(a2, itemPage, itemPageMax);
+            SecondFrameTable;
+            MenuSecondTable(Key, x, y, StringNumber, RowsNumber, pagenumber,
+      itemPage, itemPageMax, p2, a2);
           end;
           chr(61):  //F3 - Удаление значения
           begin
@@ -2520,11 +2827,11 @@ var
               'Выберете номер одного элемента, который вы желаете удалить: ');
             gotoxy(1, 60);
             clreol;
-            //DeleteappointmentArr(p, a, number);
-            gotoxy(1, 60);
-            Write(
-              ' Обновите таблицу путем выхода через esc и входом обратно');
-            gotoxy(x, y);
+            //DeleteappointmentArr(p2, a2, number);
+            ViewSecondTable(a2, itemPage, itemPageMax);
+            SecondFrameTable;
+            MenuSecondTable(Key, x, y, StringNumber, RowsNumber, pagenumber,
+      itemPage, itemPageMax, p2, a2);
           end;
           chr(81):  //PageDown - Переход по страницам (след.)
           begin
@@ -2557,7 +2864,7 @@ var
           chr(8): //BackSpace - удаление по стрелкам
           begin
             i := (StringNumber + itempage) - one;
-            //DeleteappointmentArr(p, a, i);
+            //DeleteappointmentArr(p2, a2, i);
             gotoxy(one, twentyeight);
             Write(
               ' Обновите таблицу путем выхода через esc и входом обратно');
@@ -2716,10 +3023,11 @@ var
       if key = chr(8) then //BackSpace - удаление по стрелкам
       begin
         i := (StringNumber + itempage) - 1;
-        //  DeleteappointmentArr(p, a, i);
-        gotoxy(1, twentyeight);
-        Write(' Обновите таблицу путем выхода через esc и входом обратно');
-        gotoxy(x, y);
+          //DeleteappointmentArr(p2, a2, i);
+        ViewSecondTable(a2, itemPage, itemPageMax);
+    SecondFrameTable;
+    MenuSecondTable(Key, x, y, StringNumber, RowsNumber, pagenumber,
+      itemPage, itemPageMax, p2, a2);
       end;
     until Key = chr(9);//twentyseven
     x := HomeX;
@@ -3220,7 +3528,7 @@ var
     ViewFirstTable(a, itemPage, itemPageMax);
     FirstFrameTable;
     MenuFirstTable(Key, x, y, StringNumber, RowsNumber, pagenumber,
-      itemPage, itemPageMax, p, a);
+      itemPage, itemPageMax, p, a, p2, a2);
   end;
 
   procedure item4;   //Вторая таблица
