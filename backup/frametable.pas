@@ -30,7 +30,6 @@ procedure FirstFrameTable;
 var
   Count, Count2, x, y: integer;
 begin
-  clrscr;
 
   gotoxy(3, cell_height);
   Write('Дата');
@@ -277,7 +276,6 @@ procedure ThirdFrameTable;
 var
   Count, Count2, x, y: integer;
 begin
-  clrscr;
 
   gotoxy(3, cell_height);
   Write('Фамилия');

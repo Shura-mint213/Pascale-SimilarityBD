@@ -2840,8 +2840,6 @@ procedure SortFirstTable(var Key: char; var x, y: integer;
     gotoxy(one, twentyseven);
     write('выбурите сортировка 1 - тип приема 2 -  пациент 3 - врач ');
       Key := readkey;
-
-        Key := readkey;
         case Key of
           chr(49):  //1   сортировака по типу приема
           begin
@@ -2860,6 +2858,116 @@ procedure SortFirstTable(var Key: char; var x, y: integer;
     y := HomeY;
   end;
 
+Procedure SearchFIOPatient(var str: myLongString; var p: appointments; var a: appointmentArr);
+var i: integer;
+  steTest: myLongString;
+begin
+      x := homeX;
+    y := homeY;
+    clrscr
+  FirstFrameTable;
+      for i:=0 to nmax do
+      begin
+      //steTest := a[i].fiopat
+      if (str = a[i].fiopat) then
+      begin
+
+    gotoxy(x, y);
+    Write(a[i].d.day, '.', a[i].d.month, '.', a[i].d.year);
+    x := x + cell_width;
+    gotoxy(x, y);
+   Write(a[i].timestart.hour, ':', a[i].timestart.minute);
+    x := x + cell_width;
+     gotoxy(x, y);
+        Write(a[i].timefinish.hour, ':', a[i].timefinish.minute);
+    x := x + cell_width;
+        gotoxy(x, y);
+        Write(a[i].typeapp);
+    x := x + cell_width;
+        gotoxy(x, y);
+        Write(a[i].fiodoc);
+    x := x + cell_width;
+        gotoxy(x, y);
+        Write(a[i].fiopat);
+        y := y + cell_height;
+        x:= homeX
+        end;
+    end;
+end;
+
+Procedure SearchFIODoctor(var str: myLongString; var p: appointments; var a: appointmentArr);
+var i: integer;
+  steTest: myLongString;
+begin
+      x := homeX;
+    y := homeY;
+    clrscr;
+  FirstFrameTable;
+      for i:=0 to nmax do
+      begin
+      //steTest := a[i].fiopat
+      if (str = a[i].fiodoc) then
+      begin
+
+    gotoxy(x, y);
+    Write(a[i].d.day, '.', a[i].d.month, '.', a[i].d.year);
+    x := x + cell_width;
+    gotoxy(x, y);
+   Write(a[i].timestart.hour, ':', a[i].timestart.minute);
+    x := x + cell_width;
+     gotoxy(x, y);
+        Write(a[i].timefinish.hour, ':', a[i].timefinish.minute);
+    x := x + cell_width;
+        gotoxy(x, y);
+        Write(a[i].typeapp);
+    x := x + cell_width;
+        gotoxy(x, y);
+        Write(a[i].fiodoc);
+    x := x + cell_width;
+        gotoxy(x, y);
+        Write(a[i].fiopat);
+        y := y + cell_height;
+        x:= homeX
+        end;
+    end;
+end;
+procedure SearchFirstTable(var Key: char; var x, y: integer;
+    {Процедура для передвижения и выбора места записи}
+  var StringNumber, RowsNumber, pagenumber, itemPage, itemPageMax: integer;
+  var p: appointments; var a: appointmentArr);
+ {Key-код нажатия клавиши
+  x,y-координаты}
+  var
+    i, CountMax: integer;
+    str: myLongString;
+  begin
+    x := HomeX;       //начальная позиция X
+    y := HomeY;       //начальная позиция Y
+    gotoxy(x, y);
+    StringNumber := one;
+    RowsNumber := one;
+    CountMax := 2;
+    TextAttr := TableColorUnSelected_item;
+    gotoxy(one, twentyseven);
+    write('выбурите по какому полую искать 1 - пациент 2 -  врач ');
+        Key := readkey;
+        case Key of
+          chr(49):  //1   сортировака по типу приема
+          begin
+          TestSpecialty(str,
+            ' введите ФИО пациента ');
+          SearchFIOPatient(str, p, a);
+          end;
+          chr(50):  //2 сортировака по Фио пациент
+          begin
+          TestSpecialty(str,
+            ' введите ФИО врача ');
+          SearchFIODoctor(str, p, a);
+          end;
+        end;
+    x := HomeX;
+    y := HomeY;
+  end;
   procedure MenuFirstTable(var Key: char; var x, y: integer;
     {Процедура для передвижения и выбора места записи}
   var StringNumber, RowsNumber, pagenumber, itemPage, itemPageMax: integer;
@@ -2962,6 +3070,12 @@ procedure SortFirstTable(var Key: char; var x, y: integer;
             MenuFirstTable(Key, x, y, StringNumber, RowsNumber, pagenumber,
       itemPage, itemPageMax, p, a, p2, a2);
           end;
+          chr(62):  //F4 - поиск
+          begin
+            SearchFirstTable(Key, x, y, StringNumber, RowsNumber, pagenumber,
+      itemPage, itemPageMax, p, a);
+          end;
+
           chr(81):  //PageDown - Переход по страницам (след.)
           begin
             if (pagenumber < pagenumbermax) then
@@ -3484,10 +3598,9 @@ procedure SortFirstTable(var Key: char; var x, y: integer;
           3: item3;
           4: item4;
           5: item5;
-          6: ;
-          7: ;//item7;
-          8: item8;
-          9: key := chr(9);{выход}    //twentyseven
+          6: ;//item7;
+          7: item8;
+          8: key := chr(9);{выход}    //twentyseven
         end;
         MenuToScr;
       end;

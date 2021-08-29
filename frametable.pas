@@ -40,9 +40,9 @@ begin
   gotoxy(57, cell_height);
   Write('Тип приема');
   gotoxy(75, cell_height);
-  Write('Пациент');
-  gotoxy(93, cell_height);
   Write('Врач');
+  gotoxy(93, cell_height);
+  Write('Пациент');
 
 
     gotoxy(1, 1);
