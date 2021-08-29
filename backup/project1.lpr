@@ -279,7 +279,7 @@ var
   end;
 
   procedure Testfiodoc(var FioDoc: mystring; message: message_string);
-  //Подпрограмма проверяет правильность ввода имени
+  //Подпрограмма проверяет правильность ввода ФИО
   //i,j - счетчики
   //error - наличие ошибки
   //message - строка на вывод сообщения
@@ -349,7 +349,7 @@ var
   end;
 
   procedure Testfiopat(var fiopat: mystring; message: message_string);
-  //Подпрограмма проверяет правильность ввода фамилии
+  //Подпрограмма проверяет правильность ввода ФИО
   //i,j - счетчики
   //error - наличие ошибки
   //message - строка на вывод}
@@ -370,9 +370,6 @@ var
     clreol;
   end;
 
-
-     //case Key of
-     //     chr(80):
   function Checktypeapp: mystring;
     //Функция для проверки ввода типа приема через readkey
     //symbol - счетчик
@@ -529,8 +526,7 @@ var
 
 
 procedure TestFIODoctor(var typeapp: mystring; message: message_string);
- //Подпрограмма проверяет правильность ввода фамилии
- //i,j - счетчики
+ //Подпрограмма проверяет правильность ввода ФИО
  //error - наличие ошибки
  //message - строка на вывод}
  var
@@ -552,10 +548,7 @@ procedure TestFIODoctor(var typeapp: mystring; message: message_string);
 
 procedure TestFIOThtid(var typeapp: mystring; count: integer;
    var p3: patientType; var a3: patientTypeArr);
- //Подпрограмма проверяет правильность ввода фамилии
- //i,j - счетчики
- //error - наличие ошибки
- //message - строка на вывод}
+ //Подпрограмма для склейки строк
  var
    error: boolean;
  begin
@@ -566,10 +559,7 @@ procedure TestFIOThtid(var typeapp: mystring; count: integer;
  end;
    procedure TestFIOThrid(var typeapp: mystring; count: integer;
     var p2: patientType; var a2: patientTypeArr);
-  //Подпрограмма проверяет правильность ввода фамилии
-  //i,j - счетчики
-  //error - наличие ошибки
-  //message - строка на вывод}
+  //Для объединения строк в одну
   begin
       typeapp := a2[count].surname + ' ' + a2[count].Name+ ' '
       + a2[count].patronymic;
@@ -578,10 +568,7 @@ procedure TestFIOThtid(var typeapp: mystring; count: integer;
   end;
   procedure TestFIOSecond(var typeapp: mystring; count: integer;
     var p3: doctorType; var a3: doctorTypeArr);
-  //Подпрограмма проверяет правильность ввода фамилии
-  //i,j - счетчики
-  //error - наличие ошибки
-  //message - строка на вывод}
+  //Для объединения строк в одну
   begin
       typeapp := a3[count].surname + ' ' + a3[count].Name+ ' '
       + a3[count].patronymic;
@@ -590,7 +577,7 @@ procedure TestFIOThtid(var typeapp: mystring; count: integer;
   end;
 
 procedure Testtypeapp(var typeapp: mystring; message: message_string);
-  //Подпрограмма проверяет правильность ввода фамилии
+  //Подпрограмма проверяет правильность ввода
   //i,j - счетчики
   //error - наличие ошибки
   //message - строка на вывод}
@@ -701,181 +688,6 @@ procedure Testtypeapp(var typeapp: mystring; message: message_string);
     Checkvariant := variant;
   end;
 
-  procedure testvariant(var variant: integer);
-  //Подпрограмма проверяет правильность ввода оценок студентов
-  //s_age - ввод числа для проверки
-  //age - возраст
-  //code - переменная для защита
-  var
-    error: boolean;
-  begin
-    repeat
-      error := False;
-      gotoxy(1, twentyseven);
-      Write('Введите вариант(макс.', variantmax, '):');
-      variant := Checkvariant;
-      gotoxy(one, twentyseven);
-      clreol;
-      if (variant < 0) or (variant > variantMax) then
-      begin
-        gotoxy(1, twentyeight);
-        Write('Вы ввели некорректный вариант. Попробуйте снова.');
-        error := True;
-      end;
-    until (not error);
-    gotoxy(one, twentyeight);
-    clreol;
-  end;
-
-  function Checkpractan: integer;
-    //Функция для проверки ввода варианта через readkey, где
-    //symbol - счетчик
-    //s_key - ввод числа для проверки
-    //key - клавиша
-
-  var
-    practan, symbol: integer;
-    key: char;
-    s_practan: string;
-    error: boolean;
-  begin
-    s_practan := '';
-    symbol := 0;
-    practan := 0;
-    repeat
-      error := False;
-      key := readkey;
-      if ((Ord(key) >= 47) and (Ord(key) <= 58)) and (symbol < 3) then
-      begin
-        if ((Ord(key)) = 72) or ((Ord(key)) = 77) or ((Ord(key)) = 80) or
-          ((Ord(key)) = 75) then
-          error := True
-        else
-          s_practan := s_practan + key;
-        symbol := symbol + one;
-        if error = False then
-        begin
-          Write(key);
-        end;
-      end;
-      if (key = #8) and (symbol >= one) then
-      begin
-        Delete(s_practan, length(s_practan), 1);
-        //s_variant-строка из который удалены символы,
-        //length - номер символа, с которого удалять,
-        //1 - кол-во символов
-        Write(#8, ' ', #8);
-        symbol := symbol - one;
-      end;
-      if s_practan = '' then
-        error := True;
-    until (key = #13) and (not error);
-    Val(s_practan, practan, symbol);
-    checkpractan := practan;
-  end;
-
-  procedure testpractan(var practan: integer);
-  //Подпрограмма проверяет правильность ввода оценок студентов
-  //s_practan - ввод числа для проверки
-  //practan - номер практической
-  //code - переменная для защиты
-  var
-    error: boolean;
-  begin
-    repeat
-      error := False;
-      gotoxy(one, twentyseven);
-      Write('Введите номер практической работы (макс.',
-        practanmax, '): ');
-      practan := Checkpractan;
-      gotoxy(one, twentyseven);
-      clreol;
-      if (practan < 0) or (practan > practanMax) then
-      begin
-        gotoxy(one, twentyeight);
-        Write(
-          'Вы ввели некорректный номер практической работы. Попробуйте снова.');
-        error := True;
-      end;
-    until (not error);
-    gotoxy(one, twentyeight);
-    clreol;
-  end;
-
-  function Checkpractansecond: integer;
-    //Функция для проверки ввода варианта через readkey, где
-    //symbol - счетчик
-    //s_key - ввод числа для проверки
-    //key - клавиша
-  var
-    practansecond, symbol: integer;
-    key: char;
-    s_practansecond: string;
-    error: boolean;
-  begin
-    s_practansecond := '';
-    symbol := 0;
-    practansecond := 0;
-    repeat
-      error := False;
-      key := readkey;
-      if ((Ord(key) >= 47) and (Ord(key) <= 58)) and (symbol < 3) then
-      begin
-        if ((Ord(key)) = 72) or ((Ord(key)) = 77) or ((Ord(key)) = 80) or
-          ((Ord(key)) = 75) then
-          error := True
-        else
-          s_practansecond := s_practansecond + key;
-        symbol := symbol + one;
-        if error = False then
-        begin
-          Write(key);
-        end;
-      end;
-      if (key = #8) and (symbol >= one) then
-      begin
-        Delete(s_practansecond, length(s_practansecond), 1);
-        //s_variant-строка из который удалены символы,
-        //length - номер символа, с которого удалять,
-        //1 - кол-во символов
-        Write(#8, ' ', #8);
-        symbol := symbol - one;
-      end;
-      if s_practansecond = '' then
-        error := True;
-    until (key = #13) and (not error);
-    Val(s_practansecond, practansecond, symbol);
-    checkpractansecond := practansecond;
-  end;
-
-  procedure testpractansecond(var practansecond: integer);
-  //Подпрограмма проверяет правильность ввода оценок студентов
-  //s_practan - ввод числа для проверки
-  //practansecond - номер практической
-  //code - переменная для защита
-  var
-    error: boolean;
-  begin
-    repeat
-      error := False;
-      gotoxy(one, twentyseven);
-      Write('Введите практическую работу (макс.',
-        practanmax, '): ');
-      practansecond := Checkpractansecond;
-      gotoxy(one, twentyseven);
-      clreol;
-      if (practansecond < 0) or (practansecond > practanMax) then
-      begin
-        gotoxy(one, twentyeight);
-        Write(
-          'Вы ввели некорректную практической работы. Попробуйте снова.');
-        error := True;
-      end;
-    until (not error);
-    gotoxy(one, twentyeight);
-    clreol;
-  end;
-
   function Checktimefinish: integer;
     //Функция для проверки ввода варианта через readkey, где
     //symbol - счетчик
@@ -921,220 +733,6 @@ procedure Testtypeapp(var typeapp: mystring; message: message_string);
     Val(s_timefinish, timefinish, symbol);
     checktimefinish := timefinish;
   end;
-
-  procedure testtimefinish(var timefinish: integer);
-  //Подпрограмма проверяет правильность ввода оценок студентов
-  //s_practan - ввод числа для проверки
-  //practan - номер практической
-  //code - переменная для защита
-  var
-    error: boolean;
-  begin
-    repeat
-      error := False;
-      gotoxy(1, twentyseven);
-      Write('Введите время на практическую работу (макс.', timefinishmax, '): ');
-      timefinish := Checktimefinish;
-      gotoxy(1, twentyseven);
-      clreol;
-      if (timefinish < 0) or (timefinish > timefinishMax) then
-      begin
-        gotoxy(1, twentyeight);
-        Write('Вы ввели некорректное время на выполнение. Попробуйте снова.');
-        error := True;
-      end;
-    until (not error);
-    gotoxy(one, twentyeight);
-    clreol;
-  end;
-
-  function Checklvl: integer;
-    //Функция для проверки ввода уровня через readkey
-    //symbol - счетчик
-    //s_key - ввод числа для проверки
-    // key - клавиша}
-  var
-    lvl, symbol: integer;
-    key: char;
-    s_lvl: string;
-    error: boolean;
-  begin
-    s_lvl := '';
-    symbol := 0;
-    lvl := 0;
-    repeat
-      error := False;
-      key := readkey;
-      if ((Ord(key) >= fortyeight) and (Ord(key) <= fiftyseven)) and (symbol < 8) then
-      begin
-        s_lvl := s_lvl + key;
-        symbol := symbol + 1;
-        if error = False then
-          Write(key);
-      end;
-      if (key = #8) and (symbol >= one) then
-      begin
-        Delete(s_lvl, length(s_lvl), one);
-        Write(#8, ' ', #8);
-        symbol := symbol - one;
-      end;
-      if s_lvl = '' then
-        error := True;
-    until (key = #13) and (not error);
-    Val(s_lvl, lvl, symbol);
-    checklvl := lvl;
-  end;
-
-  procedure Testlvl(var lvl: longint);
-  //Подпрограмма проверяет правильность ввода уровня
-  var
-    error: boolean;
-  begin
-    TextBackground(0);
-    TextColor(7);
-    repeat
-      error := False;
-      gotoxy(one, twentyseven);
-      Write('Введите уровень практической (макс.',
-        lvlmax, '): ');
-      lvl := Checklvl;
-      gotoxy(one, twentyeight);
-      clreol;
-      gotoxy(one, twentyseven);
-      clreol;
-      if (lvl < one) or (lvl > lvlMax) then
-      begin
-        gotoxy(1, twentyeight);
-        Write('Вы ввели некорректное число. Попробуйте снова.');
-        error := True;
-      end;
-    until (not error);
-  end;
-
-  function Checkmark: integer;
-    //Функция для проверки ввода оценки readkey
-    //symbol - счетчик
-    //s_key - ввод числа для проверки
-    //key - клавиша
-  var
-    mark, symbol: integer;
-    key: char;
-    s_mark: string;
-    error: boolean;
-  begin
-    s_mark := '';
-    symbol := 0;
-    mark := 0;
-    repeat
-      error := False;
-      key := readkey;
-      if ((Ord(key) >= fortyeight) and (Ord(key) <= fiftyseven)) and (symbol < 4) then
-      begin
-        s_mark := s_mark + key;
-        symbol := symbol + 1;
-        if error = False then
-          Write(key);
-      end;
-      if (key = #8) and (symbol >= one) then
-      begin
-        Delete(s_mark, length(s_mark), one);
-        Write(#8, ' ', #8);
-        symbol := symbol - one;
-      end;
-      if s_mark = '' then
-        error := True;
-    until (key = #13) and (not error);
-    Val(s_mark, mark, symbol);
-    checkmark := mark;
-  end;
-
-  procedure testmark(var mark: integer);
-  //Подпрограмма проверяет правильность ввода оценки
-  var
-    error: boolean;
-  begin
-    TextBackground(0);
-    TextColor(7);
-    repeat
-      error := False;
-      gotoxy(1, twentyseven);
-      Write('Введите оценку 1-5 (макс.', markmax, '): ');
-      mark := Checkmark;
-      gotoxy(1, twentyeight);
-      clreol;
-      gotoxy(1, twentyseven);
-      clreol;
-      if (mark < one) or (mark > markMax) then
-      begin
-        gotoxy(1, twentyeight);
-        Write('Вы ввели некорректное число. Попробуйте снова.');
-        error := True;
-      end;
-    until (not error);
-  end;
-
-  function Checkmarksecond: integer;
-    //Функция для проверки ввода оценки readkey
-    //symbol - счетчик
-    // s_key - ввод числа для проверки
-    // key - клавиша
-  var
-    marksecond, symbol: integer;
-    key: char;
-    s_marksecond: string;
-    error: boolean;
-  begin
-    s_marksecond := '';
-    symbol := 0;
-    marksecond := 0;
-    repeat
-      error := False;
-      key := readkey;
-      if ((Ord(key) >= fortyeight) and (Ord(key) <= fiftyseven)) and (symbol < 4) then
-      begin
-        s_marksecond := s_marksecond + key;
-        symbol := symbol + 1;
-        if error = False then
-          Write(key);
-      end;
-      if (key = #8) and (symbol >= one) then
-      begin
-        Delete(s_marksecond, length(s_marksecond), one);
-        Write(#8, ' ', #8);
-        symbol := symbol - one;
-      end;
-      if s_marksecond = '' then
-        error := True;
-    until (key = #13) and (not error);
-    Val(s_marksecond, marksecond, symbol);
-    checkmarksecond := marksecond;
-  end;
-
-  procedure testmarksecond(var marksecond: integer);
-  //Подпрограмма проверяет правильность ввода оценки
-  var
-    error: boolean;
-  begin
-    TextBackground(0);
-    TextColor(7);
-    repeat
-      error := False;
-      gotoxy(1, twentyseven);
-      Write('Введите прошлую оценку 1-5 (макс.', markmax, '): ');
-      marksecond := Checkmarksecond;
-      gotoxy(1, twentyeight);
-      clreol;
-      gotoxy(1, twentyseven);
-      clreol;
-      if (marksecond < one) or (marksecond > markMax) then
-      begin
-        gotoxy(1, twentyeight);
-        Write('Вы ввели некорректное число. Попробуйте снова.');
-        error := True;
-      end;
-    until (not error);
-  end;
-
 
   //ДАТА
   function CheckDay: integer;
@@ -1511,118 +1109,6 @@ procedure Testtypeapp(var typeapp: mystring; message: message_string);
     clreol;
   end;
 
-  //Сортировки
-{
-  procedure SortlastName(var a: appointmentArr);
- //Подпрограмма сортировки массива по алфавиту по названию
- //i,j - счетчики
- //a - массив товаров
-  var
-    i, j: integer;
-  begin
-    for i := 1 to nmax do
-      for j := 1 to nmax - i do
-        with a[i] do
-          if a[j].lastname < a[j + 1].lastname then
-          begin
-            P := a[j];
-            a[j] := a[j + 1];
-            a[j + 1] := P;
-          end;
-  end;
-
-  procedure SortFirstName(var a: appointmentArr);
-  //Подпрограмма сортировки массива по алфавиту, где
-  //  i,j - счетчики
-  //  a - массив студентов
-  var
-    i, j: integer;
-  begin
-    for i := 1 to nmax do
-      for j := 1 to nmax - i do
-        with a[i] do
-        begin
-          if a[j].firstname > a[j + one].firstname then
-          begin
-            p := a[j];
-            a[j] := a[j + one];
-            a[j + one] := p;
-          end;
-        end;
-  end;
-
-  procedure Sortmark(var a: appointmentArr);
-  //Подпрограмма сортировки массива оценок
-  //i,j - счетчики
-  //  a - массив студентов
-  var
-    i, j: integer;
-  begin
-    for i := one to nmax do
-      for j := one to nmax - i do
-        with a[i] do
-          if a[j].mark < a[j + one].mark then
-          begin
-            p := a[j];
-            a[j] := a[j + one];
-            a[j + one] := p;
-          end;
-  end;
-
-  procedure Sortlvl(var a: appointmentArr);
-  //Подпрограмма сортировки массива по уровню
-  //i,j - счетчики
-  //  a - массив студентов
-  var
-    i, j: integer;
-  begin
-    for i := one to nmax do
-      for j := one to nmax - i do
-        with a[i] do
-          if a[j].lvl < a[j + one].lvl then
-          begin
-            p := a[j];
-            a[j] := a[j + one];
-            a[j + one] := p;
-          end;
-  end;
-
-  function CompareDate(a, b: appointments): boolean;
-  //Функция сравнения дат
-  var
-    flag: boolean;
-  begin
-    flag := False;
-    if a.d.year < b.d.year then
-      flag := True
-    else if a.d.month < b.d.month then
-      flag := True
-    else if a.d.day < b.d.day then
-      flag := True;
-    CompareDate := flag;
-  end;
-
-  procedure SortDate(var a: appointmentArr);
-  //Подпрограмма сортировки массива по дате
-  //i,j - счетчики
-  //  a - массив студентов
-  var
-    i, j: integer;
-  begin
-    for i := one to nmax do
-      for j := one to nmax - i do
-        with a[i] do
-          if CompareDate(a[j - one], a[j]) then
-          begin
-            p := a[j - one];
-            a[j - one] := a[j];
-            a[j] := p;
-          end;
-  end;
-
- }
-  //таблицы
-
   procedure ViewFirstTable(var a: appointmentArr; var itemPage, itemPageMax: integer);
   //Вывод результатов в первую таблицу
   var
@@ -1651,7 +1137,6 @@ procedure Testtypeapp(var typeapp: mystring; message: message_string);
       with a[i] do
       begin
         gotoxy(x, y);
-        //if (t. <> 0) and (d.month <> 0) and (d.year <> 0) then   //пустая ячейка
         Write(timestart.hour, ':', timestart.minute);
         y := y + cell_height;
         //переход на следующую ячейку снизу
@@ -1680,7 +1165,6 @@ procedure Testtypeapp(var typeapp: mystring; message: message_string);
       with a[i] do
       begin
         gotoxy(x, y);
-        //if typeapp <> 0 then //пустая ячейка
         Write(typeapp);
         y := y + cell_height;
         //переход на следующую ячейку снизу
@@ -1695,7 +1179,6 @@ procedure Testtypeapp(var typeapp: mystring; message: message_string);
       with a[i] do
       begin
         gotoxy(x, y);
-        //if mark <> 0 then  //пустая ячейка
         Write(FioDoc);
         y := y + cell_height;
         //переход на следующую ячейку снизу
@@ -1709,7 +1192,6 @@ procedure Testtypeapp(var typeapp: mystring; message: message_string);
       with a[i] do
       begin
         gotoxy(x, y);
-        //     if variant <> 0 then //пустая ячейка
         Write(FioPat);
         y := y + cell_height;
         //переход на следующую ячейку снизу
@@ -1733,14 +1215,10 @@ procedure Testtypeapp(var typeapp: mystring; message: message_string);
 procedure ViewSecondTableNotNull(var a2: doctorTypeArr; var itemPage, itemPageMax: integer);
  //Вывод результатов в первую таблицу
  var
-   Count: integer;
    i: integer;
-   newX: integer;
  begin
-   Count := 0;
    x := homeX;
    y := homeY;
-   newX := x;
 
    for i := itemPage to itemPageMax do
    begin
@@ -1759,7 +1237,6 @@ procedure ViewSecondTableNotNull(var a2: doctorTypeArr; var itemPage, itemPageMa
    x := x + cell_width;
    //переход на следующую ячейку по горизонтали
    y := homeY;
-   newX := x;
    for i := itemPage to itemPageMax do
    begin
      with a2[i] do
@@ -1843,11 +1320,9 @@ procedure ViewSecondTableNotNull(var a2: doctorTypeArr; var itemPage, itemPageMa
  end;
 
   procedure ViewSecondTable(var a2: doctorTypeArr; var itemPage, itemPageMax: integer);
-  //Вывод результатов в первую таблицу
+  //Вывод результатов во вторую таблицу
   var
-    Count: integer;
     i: integer;
-    newX: integer;
   begin
     Count := 0;
     x := homeX;
@@ -2391,7 +1866,7 @@ procedure MenuAddSecondTable(var Key: char; var x, y: integer;
        end;
      end
      else
-   until Key = chr(13);//twentyseven
+   until Key = chr(twentyseven);//twentyseven
    x := HomeX;
    y := HomeY;
  end;
@@ -2489,7 +1964,7 @@ procedure MenuAddSecondTable(var Key: char; var x, y: integer;
   end;
 
   procedure WriteaPacientArr(var p3: patientType; var a3: patientTypeArr);
-  //Подпрограмма ввода массива данными о пациентов
+  //Подпрограмма ввода массива данными пациентов
   //  i,j - счетчики
   //  number - кол-во приемов
   //  s - данные о приеме
@@ -2531,41 +2006,9 @@ procedure MenuAddSecondTable(var Key: char; var x, y: integer;
     writeln(' ');
   end;
 
-  procedure ChangeappointmentArr(var p: appointments; var a: appointmentArr);
-  {Подпрограмма изменения массива данными о приемах }
-  var
-    error: boolean;
-    number, CountMax: integer;
-  begin
-    CountMax := 2;
-    repeat
-      TextBackground(0);
-      TextColor(7);
-      error := False;
-      gotoxy(one, twentyseven);
-      TestNumber(number, CountMax,
-        'Выберете номер одного элемента, который вы желаете добавить/изменить: ');
-      gotoxy(one, twentyseven);    //twentyseven
-      clreol;
-      with a[number] do
-      begin
-        Testdate(d);
-        TestTime(timestart);
-        TestTime(timefinish);
-        TestTypeapp(typeapp, 'Введите тип приема:  ');
-        TestFioDoc(fiodoc, ' Введите ФИО врача: ');
-        TestFioPat(fiopat, ' Введите ФИО пациента: ');
-        writeln(' ');
-      end;
-    until (not error);
-    gotoxy(one, 60);
-    clreol;
-    gotoxy(x, y);
-  end;
-
 procedure DeleteDoctorArr(var p2: doctorType; var a2: doctorTypeArr;
  var number: integer);
- //Подпрограмма удаления в массиве данных о студенте
+ //Подпрограмма удаления в массиве данных
  var
    error: boolean;
    n, i: integer;
@@ -2592,7 +2035,7 @@ procedure DeleteDoctorArr(var p2: doctorType; var a2: doctorTypeArr;
 
   procedure DeletePatientArr(var p3: patientType; var a3: patientTypeArr;
   var number: integer);
-  //Подпрограмма удаления в массиве данных о студенте
+  //Подпрограмма удаления в массиве данных
   var
     error: boolean;
     n, i: integer;
@@ -2619,7 +2062,7 @@ procedure DeleteDoctorArr(var p2: doctorType; var a2: doctorTypeArr;
 
   procedure DeleteappointmentArr(var p: appointments; var a: appointmentArr;
   var number: integer);
-  //Подпрограмма удаления в массиве данных о студенте
+  //Подпрограмма удаления в массиве данных
   var
     error: boolean;
     n, i: integer;
@@ -2644,72 +2087,6 @@ procedure DeleteDoctorArr(var p2: doctorType; var a2: doctorTypeArr;
     gotoxy(x, y);
   end;
 
- {
-  procedure SearchName(var p: appointments; var a: appointmentArr);
-  //Подпрограмма поиска массива по алфавиту по имени в первой таблице
-  var
-    str: mystring;
-    i, z: integer;
-    error: boolean;
-    y: integer;
-  begin
-    clrscr;
-    FirstFrameTable;
-    textbackground(0);
-    error := True;
-    gotoxy(one, twentyseven);
-    textbackground(0);
-    Write(' Введите имя для поиска:  ');
-    str := CheckfirstName;
-
-    for i := 1 to nmax do
-    begin
-      with a[i] do
-      begin
-        if (str = firstName) then
-        begin
-          mark += one;
-          if mark = one then
-          begin
-            z := -2;
-          end;
-          z += 2;
-
-          gotoxy(3, one + z);
-          Write(firstname);
-          gotoxy(15, one + z);
-          Write(lastname);
-          gotoxy(30, one + z);
-          Write(lvl);
-          gotoxy(44, one + z);
-          Write(mark);
-          gotoxy(58, 1 + z);
-          Write(variant);
-          gotoxy(71, one + z);
-          Write(practan);
-          gotoxy(86, one + z);
-          Write(d.day, '.', d.month, '.', d.year);
-          error := False;
-        end;
-      end;
-    end;
-    if error = True then
-    begin
-      gotoxy(one, twentyeight);
-      Write('Такого нет.  ');
-    end;
-    gotoxy(2, 29);
-  end;
- }
-
-   {appointments = record
-    d: date_type;
-    timestart: time_type;
-    timefinish: time_type;
-    typeapp: mystring;
-    fiodoc: mystring;
-    fiopat: mystring;
-    }
 Procedure SortTypeApp(var p: appointments; var a: appointmentArr);
 var j, i: integer;
   str1, str2, str3: string;
@@ -2748,6 +2125,7 @@ begin
 end;
 
 Procedure SortFIODoctor(var p: appointments; var a: appointmentArr);
+// процедура сортировки врачей
 var j, i: integer;
   str1, str2, str3: string;
   str4: date_type;
@@ -2785,6 +2163,7 @@ begin
 end;
 
 Procedure SortFIOPatient(var p: appointments; var a: appointmentArr);
+//процедура сортировки пициентов
 var j, i: integer;
   str1, str2, str3: string;
   str4: date_type;
@@ -2822,7 +2201,7 @@ begin
 end;
 
 procedure SortFirstTable(var Key: char; var x, y: integer;
-    {Процедура для передвижения и выбора места записи}
+//процедура для сортировки элементов
   var StringNumber, RowsNumber, pagenumber, itemPage, itemPageMax: integer;
   var p: appointments; var a: appointmentArr);
  {Key-код нажатия клавиши
@@ -2859,16 +2238,15 @@ procedure SortFirstTable(var Key: char; var x, y: integer;
   end;
 
 Procedure SearchFIOPatient(var str: myLongString; var p: appointments; var a: appointmentArr);
-var i: integer;
-  steTest: myLongString;
+  //процедура поиска пациентов по их ФИО
+  var i: integer;
 begin
       x := homeX;
     y := homeY;
-    clrscr
+    clrscr;
   FirstFrameTable;
       for i:=0 to nmax do
       begin
-      //steTest := a[i].fiopat
       if (str = a[i].fiopat) then
       begin
 
@@ -2896,8 +2274,8 @@ begin
 end;
 
 Procedure SearchFIODoctor(var str: myLongString; var p: appointments; var a: appointmentArr);
+// Процедура поиска Докторов по ФИО
 var i: integer;
-  steTest: myLongString;
 begin
       x := homeX;
     y := homeY;
@@ -2905,7 +2283,6 @@ begin
   FirstFrameTable;
       for i:=0 to nmax do
       begin
-      //steTest := a[i].fiopat
       if (str = a[i].fiodoc) then
       begin
 
@@ -2932,7 +2309,7 @@ begin
     end;
 end;
 procedure SearchFirstTable(var Key: char; var x, y: integer;
-    {Процедура для передвижения и выбора места записи}
+    // процедура для поиска элементов
   var StringNumber, RowsNumber, pagenumber, itemPage, itemPageMax: integer;
   var p: appointments; var a: appointmentArr);
  {Key-код нажатия клавиши
@@ -2952,13 +2329,13 @@ procedure SearchFirstTable(var Key: char; var x, y: integer;
     write('выбурите по какому полую искать 1 - пациент 2 -  врач ');
         Key := readkey;
         case Key of
-          chr(49):  //1   сортировака по типу приема
+          chr(49):  //1   поиск по ФИО пациента
           begin
           TestSpecialty(str,
             ' введите ФИО пациента ');
           SearchFIOPatient(str, p, a);
           end;
-          chr(50):  //2 сортировака по Фио пациент
+          chr(50):  //2 сортировака по Фио Врача
           begin
           TestSpecialty(str,
             ' введите ФИО врача ');
@@ -2969,7 +2346,7 @@ procedure SearchFirstTable(var Key: char; var x, y: integer;
     y := HomeY;
   end;
   procedure MenuFirstTable(var Key: char; var x, y: integer;
-    {Процедура для передвижения и выбора места записи}
+     // действия для 1 таблици
   var StringNumber, RowsNumber, pagenumber, itemPage, itemPageMax: integer;
   var p: appointments; var a: appointmentArr; var p2: doctorType; var a2: doctorTypeArr);
  {Key-код нажатия клавиши
@@ -3126,13 +2503,13 @@ procedure SearchFirstTable(var Key: char; var x, y: integer;
     MenuFirstTable(Key, x, y, StringNumber, RowsNumber, pagenumber,
       itemPage, itemPageMax, p, a, p2, a2);
       end;
-    until Key = chr(9);  //twentyseven
+    until Key = chr(twentyseven);  //twentyseven
     x := HomeX;
     y := HomeY;
   end;
 
   procedure MenuSecondTable(var Key: char; var x, y: integer;
-    {Процедура для передвижения и выбора места записи}
+   // Действия для 2 таблици
   var StringNumber, RowsNumber, pagenumber, itemPage, itemPageMax: integer;
   var p2: doctorType; var a2: doctorTypeArr);
  {Key-код нажатия клавиши
@@ -3270,12 +2647,13 @@ procedure SearchFirstTable(var Key: char; var x, y: integer;
         MenuSecondTable(Key, x, y, StringNumber, RowsNumber, pagenumber,
          itemPage, itemPageMax, p2, a2);
       end;
-    until Key = chr(9);//twentyseven
+    until Key = chr(twentyseven);//twentyseven
     x := HomeX;
     y := HomeY;
   end;
 
   procedure MenuThirdTable(var Key: char; var x, y: integer;
+  // Действия для 3 таблици
     {Процедура для передвижения и выбора места записи}
   var StringNumber, RowsNumber, pagenumber, itemPage, itemPageMax: integer;
   var p3: patientType; var a3: patientTypeArr);
@@ -3412,7 +2790,7 @@ procedure SearchFirstTable(var Key: char; var x, y: integer;
               MenuThirdTable(Key, x, y, StringNumber, RowsNumber, pagenumber,
                 itemPage, itemPageMax, p3, a3);
       end;
-    until Key = chr(9);//twentyseven
+    until Key = chr(twentyseven);//twentyseven
     x := HomeX;
     y := HomeY;
   end;
@@ -3540,14 +2918,13 @@ procedure SearchFirstTable(var Key: char; var x, y: integer;
   procedure item8;   //Справка по программе
   begin
     ClrScr;
-    writeln(' F1 - Ввод/изменение сразу нескольких элементов в таблице');
-    writeln(#10#13' F2 - Ввод/изменение одного элемента в списке(только в открытой таблице)');
+    writeln(' F1 - Ввод/изменение выбраного элемента в таблице');
+    writeln(#10#13' F2 - сортировка в таблице');
     writeln(#10#13' F3 - Удаление одного элемента в списке по выбору');
+    writeln(#10#13' F4 - поиск ппо таблице');
     writeln(#10#13' BackSpace - Удаление одного элемента в списке по стрелкам');
     writeln(#10#13' PageUp - переход на предыдущую страницу');
     writeln(#10#13' PageDown - переход на следующую страницу');
-    writeln(#10#13' Enter - Чтобы изменить одно значение введенного элемента');
-    writeln(#10#13' ! Начинайте ввод информации с первой таблицы !');
     writeln(' ');
     RKEnter(Enter);
   end;
@@ -3598,13 +2975,12 @@ procedure SearchFirstTable(var Key: char; var x, y: integer;
           3: item3;
           4: item4;
           5: item5;
-          6: ;//item7;
-          7: item8;
-          8: key := chr(9);{выход}    //twentyseven
+          6: item8;
+          7: key := chr(twentyseven);{выход}    //twentyseven
         end;
         MenuToScr;
       end;
-    until (item = MaxItemMenu) and (key = chr(9));{27 - Esc}
+    until (item = MaxItemMenu) and (key = chr(twentyseven));{27 - Esc}
   end;
 
 begin
@@ -3614,9 +2990,8 @@ begin
   menu[3] := #10#10'  1. Таблица Записи на прием';
   menu[4] := #10#10#10'  2. Таблица Врачи ';
   menu[5] := #10#10#10#10'  3. Таблица Пациенты  ';
-  menu[6] := #10#10#10#10#10#10'  Поиск по программе ';
-  menu[7] := #10#10#10#10#10#10#10'  Инструкция ';
-  menu[8] := #10#10#10#10#10#10#10#10'  Выход ';
+  menu[6] := #10#10#10#10#10#10#10'  Инструкция ';
+  menu[7] := #10#10#10#10#10#10#10#10'  Выход ';
   item := one;
   x := homey;
   y := homey;
