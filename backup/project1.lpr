@@ -1737,7 +1737,6 @@ procedure ViewSecondTableNotNull(var a2: doctorTypeArr; var itemPage, itemPageMa
    i: integer;
    newX: integer;
  begin
-   clrscr;
    Count := 0;
    x := homeX;
    y := homeY;
@@ -1947,7 +1946,6 @@ procedure ViewSecondTableNotNull(var a2: doctorTypeArr; var itemPage, itemPageMa
   var
     i: integer;
   begin
-    clrscr;
     x := homeX;
     y := homeY;
     for i := itemPage to itemPageMax do
@@ -2174,6 +2172,230 @@ procedure ViewSecondTableNotNull(var a2: doctorTypeArr; var itemPage, itemPageMa
     Write('I');
   end;
 
+procedure MenuAddThirdTable(var Key: char; var x, y: integer;
+   {Процедура для передвижения и выбора места записи}
+ var StringNumber, RowsNumber, pagenumber, itemPage, itemPageMax: integer;
+ var p3: patientType; var a3: patientTypeArr);
+{Key-код нажатия клавиши
+ x,y-координаты}
+ var
+   i, CountMax: integer;
+ begin
+   x := HomeX;       //начальная позиция X
+   y := HomeY;       //начальная позиция Y
+   gotoxy(x, y);
+   CountMax := 2;
+   StringNumber := one;
+   RowsNumber := one;
+   TextAttr := TableColorUnSelected_item;
+   repeat
+     gotoxy(one, twentyseven);
+     write('Выберите врача и нажмите Enter');
+     Key := readkey;
+     if Key = char(0) then
+     begin
+       Key := readkey;
+       case Key of
+         chr(80):               //вниз
+         begin
+           if (StringNumber < StringMax) then
+           begin
+             gotoxy(x, y);
+             TextAttr := TableColorUnselected_item;
+             Inc(StringNumber);
+             y := y + cell_height;
+             gotoXY(x, y);
+             TextAttr := TableColorSelected_item;
+           end;
+         end;
+         chr(77):               //вправо
+         begin
+           if (RowsNumber < RowsMax2) then
+           begin
+             gotoXY(x, y);
+             TextAttr := TableColorUnselected_item;
+             Inc(RowsNumber);
+             x := x + cell_width;
+             gotoXY(x, y);
+             TextAttr := TableColorSelected_item;
+           end;
+         end;
+         chr(72):               //вверх
+         begin
+           if (StringNumber > 1) then
+           begin
+             gotoxy(x, y);
+             TextAttr := TableColorUnselected_item;
+             StringNumber := StringNumber - 1;
+             y := y - cell_height;
+             gotoXY(x, y);
+             TextAttr := TableColorSelected_item;
+           end;
+         end;
+         chr(75):               //влево
+         begin
+           if (RowsNumber > one) then
+           begin
+             gotoxy(x, y);
+             TextAttr := TableColorUnselected_item;
+             RowsNumber := RowsNumber - one;
+             x := x - cell_width;       //расстояние между
+             gotoXY(x, y);
+             TextAttr := TableColorSelected_item;
+           end;
+         end;
+         chr(81):  //PageDown - Переход по страницам (след.)
+         begin
+           if (pagenumber < pagenumbermax) then
+           begin
+             pagenumber := pagenumber + one;
+             itemPage := itemPage + stringmax;
+             itemPageMax := itemPageMax + stringmax;
+             ClrScr;
+             ViewThirdTable(a3, itemPage, itemPageMax);
+             ThirdFrameTable;
+             MenuAddThirdTable(Key, x, y, StringNumber, RowsNumber, pagenumber,
+               itemPage, itemPageMax, p3, a3);
+             gotoxy(one, twentyseven);
+             write('Выберите врача и нажмите Enter');
+           end;
+         end;
+         chr(73):  //PageUp - Переход по страницам (пред.)
+         begin
+           if (pagenumber > one) then
+           begin
+             pagenumber := pagenumber - one;
+             itemPage := itemPage - stringmax;
+             itemPageMax := itemPageMax - stringmax;
+             ClrScr;
+             ViewThirdTable(a3, itemPage, itemPageMax);
+             ThirdFrameTable;
+             gotoxy(one, twentyseven);
+             write('Выберите врача и нажмите Enter');
+             MenuAddThirdTable(Key, x, y, StringNumber, RowsNumber, pagenumber,
+               itemPage, itemPageMax, p3, a3);
+           end;
+         end;
+       end;
+     end
+     else
+   until Key = chr(13);//twentyseven
+   x := HomeX;
+   y := HomeY;
+ end;
+
+procedure MenuAddSecondTable(var Key: char; var x, y: integer;
+   {Процедура для передвижения и выбора места записи}
+ var StringNumber, RowsNumber, pagenumber, itemPage, itemPageMax: integer;
+ var p2: doctorType; var a2: doctorTypeArr);
+{Key-код нажатия клавиши
+ x,y-координаты}
+ var
+   i, CountMax: integer;
+ begin
+   x := HomeX;       //начальная позиция X
+   y := HomeY;       //начальная позиция Y
+   gotoxy(x, y);
+   CountMax := 2;
+   StringNumber := one;
+   RowsNumber := one;
+   TextAttr := TableColorUnSelected_item;
+   repeat
+     gotoxy(one, twentyseven);
+     write('Выберите врача и нажмите Enter');
+     Key := readkey;
+     if Key = char(0) then
+     begin
+       Key := readkey;
+       case Key of
+         chr(80):               //вниз
+         begin
+           if (StringNumber < StringMax) then
+           begin
+             gotoxy(x, y);
+             TextAttr := TableColorUnselected_item;
+             Inc(StringNumber);
+             y := y + cell_height;
+             gotoXY(x, y);
+             TextAttr := TableColorSelected_item;
+           end;
+         end;
+         chr(77):               //вправо
+         begin
+           if (RowsNumber < RowsMax2) then
+           begin
+             gotoXY(x, y);
+             TextAttr := TableColorUnselected_item;
+             Inc(RowsNumber);
+             x := x + cell_width;
+             gotoXY(x, y);
+             TextAttr := TableColorSelected_item;
+           end;
+         end;
+         chr(72):               //вверх
+         begin
+           if (StringNumber > 1) then
+           begin
+             gotoxy(x, y);
+             TextAttr := TableColorUnselected_item;
+             StringNumber := StringNumber - 1;
+             y := y - cell_height;
+             gotoXY(x, y);
+             TextAttr := TableColorSelected_item;
+           end;
+         end;
+         chr(75):               //влево
+         begin
+           if (RowsNumber > one) then
+           begin
+             gotoxy(x, y);
+             TextAttr := TableColorUnselected_item;
+             RowsNumber := RowsNumber - one;
+             x := x - cell_width;       //расстояние между
+             gotoXY(x, y);
+             TextAttr := TableColorSelected_item;
+           end;
+         end;
+         chr(81):  //PageDown - Переход по страницам (след.)
+         begin
+           if (pagenumber < pagenumbermax) then
+           begin
+             pagenumber := pagenumber + one;
+             itemPage := itemPage + stringmax;
+             itemPageMax := itemPageMax + stringmax;
+             ClrScr;
+             ViewSecondTable(a2, itemPage, itemPageMax);
+             SecondFrameTable;
+             MenuAddSecondTable(Key, x, y, StringNumber, RowsNumber, pagenumber,
+               itemPage, itemPageMax, p2, a2);
+             gotoxy(one, twentyseven);
+             write('Выберите врача и нажмите Enter');
+           end;
+         end;
+         chr(73):  //PageUp - Переход по страницам (пред.)
+         begin
+           if (pagenumber > one) then
+           begin
+             pagenumber := pagenumber - one;
+             itemPage := itemPage - stringmax;
+             itemPageMax := itemPageMax - stringmax;
+             ClrScr;
+             ViewSecondTable(a2, itemPage, itemPageMax);
+             SecondFrameTable;
+             gotoxy(one, twentyseven);
+             write('Выберите врача и нажмите Enter');
+             MenuAddSecondTable(Key, x, y, StringNumber, RowsNumber, pagenumber,
+               itemPage, itemPageMax, p2, a2);
+           end;
+         end;
+       end;
+     end
+     else
+   until Key = chr(13);//twentyseven
+   x := HomeX;
+   y := HomeY;
+ end;
+
   procedure WriteappointmentArr(var p: appointments; var a: appointmentArr;
     var p2: doctorType; var a2:doctorTypeArr;
     var p3: patientType; var  patientTypeArr);
@@ -2204,15 +2426,20 @@ procedure ViewSecondTableNotNull(var a2: doctorTypeArr; var itemPage, itemPageMa
           TestTime(timestart);
           TestTime(timefinish);
           TestTypeapp(typeapp, 'Введите тип приема:  ');
+          clrscr;
           SecondFrameTable;
           ViewSecondTableNotNull(a2, itemPage, itemPageMax);
-
+          MenuAddSecondTable(Key, x, y, StringNumber, RowsNumber, pagenumber,
+      itemPage, itemPageMax, p2, a2);
           TestNumber(numberMin, CountMax,
         'Введите значение элемента, с которого хотите начать ввод/замену: ');
           TestFIOSecond(fiodoc, numberMin, p2, a2);
           //TestFioDoc();
+          clrscr;
           ThirdFrameTable;
           ViewThirdTableNotNull(a3, itemPage, itemPageMax);
+          MenuAddThirdTable(Key, x, y, StringNumber, RowsNumber, pagenumber,
+      itemPage, itemPageMax, p3, a3);
           TestNumber(numberMin, CountMax,
         'Введите значение элемента, с которого хотите начать ввод/замену: ');
           TestFIOThrid(fiopat, numberMin, p3, a3);
@@ -2336,6 +2563,60 @@ procedure ViewSecondTableNotNull(var a2: doctorTypeArr; var itemPage, itemPageMa
     gotoxy(x, y);
   end;
 
+procedure DeleteDoctorArr(var p2: doctorType; var a2: doctorTypeArr;
+ var number: integer);
+ //Подпрограмма удаления в массиве данных о студенте
+ var
+   error: boolean;
+   n, i: integer;
+ begin
+   n := nmax;
+   repeat
+     TextBackground(0);
+     TextColor(7);
+     error := False;
+     if (number < 1) or (number > n) then
+       Write('введен неправильный индекс')
+     else
+     begin
+       for i := number to n - 1 do
+         a2[i] := a2[i + one];
+       n := n - one;
+     end;
+     writeln(' ');
+   until (not error);
+   gotoxy(one, twentyeight);
+   clrscr;
+   gotoxy(x, y);
+ end;
+
+  procedure DeletePatientArr(var p3: patientType; var a3: patientTypeArr;
+  var number: integer);
+  //Подпрограмма удаления в массиве данных о студенте
+  var
+    error: boolean;
+    n, i: integer;
+  begin
+    n := nmax;
+    repeat
+      TextBackground(0);
+      TextColor(7);
+      error := False;
+      if (number < 1) or (number > n) then
+        Write('введен неправильный индекс')
+      else
+      begin
+        for i := number to n - 1 do
+          a3[i] := a3[i + one];
+        n := n - one;
+      end;
+      writeln(' ');
+    until (not error);
+    gotoxy(one, twentyeight);
+    clrscr;
+    gotoxy(x, y);
+  end;
+
   procedure DeleteappointmentArr(var p: appointments; var a: appointmentArr;
   var number: integer);
   //Подпрограмма удаления в массиве данных о студенте
@@ -2420,6 +2701,165 @@ procedure ViewSecondTableNotNull(var a2: doctorTypeArr; var itemPage, itemPageMa
     gotoxy(2, 29);
   end;
  }
+
+   {appointments = record
+    d: date_type;
+    timestart: time_type;
+    timefinish: time_type;
+    typeapp: mystring;
+    fiodoc: mystring;
+    fiopat: mystring;
+    }
+Procedure SortTypeApp(var p: appointments; var a: appointmentArr);
+var j, i: integer;
+  str1, str2, str3: string;
+  str4: date_type;
+  str5, str6: time_type;
+begin
+      for i:=1 to nmax-1 do
+      begin
+  {Внутренний цикл уже перебирает элементы и сравнивает между собой.}
+  for j:=1 to nmax-i do
+  begin
+    {Если элемент, больше следующего, то меняем местами.}
+    if a[j].typeapp > a[j+1].typeapp then
+    begin
+      str1 := a[j].typeapp;
+      str2 := a[j].fiodoc;
+      str3 := a[j].fiopat;
+      str4 := a[j].d;
+      str5 := a[j].timefinish;
+      str6 := a[j].timestart;
+      a[j].typeapp := a[j+1].typeapp;
+      a[j].fiodoc := a[j+1].fiodoc;
+      a[j].fiopat := a[j+1].fiopat;
+      a[j].d := a[j+1].d;
+      a[j].timefinish := a[j+1].timefinish;
+      a[j].timestart := a[j+1].timestart;
+      a[j+1].typeapp:=str1;
+      a[j+1].fiodoc:=str2;
+      a[j+1].fiopat:=str3;
+      a[j+1].d:=str4;
+      a[j+1].timefinish:=str5;
+      a[j+1].timestart:=str6;
+    end;
+  end;
+    end
+end;
+
+Procedure SortFIODoctor(var p: appointments; var a: appointmentArr);
+var j, i: integer;
+  str1, str2, str3: string;
+  str4: date_type;
+  str5, str6: time_type;
+begin
+      for i:=1 to nmax-1 do
+      begin
+  {Внутренний цикл уже перебирает элементы и сравнивает между собой.}
+  for j:=1 to nmax-i do
+  begin
+    {Если элемент, больше следующего, то меняем местами.}
+    if a[j].fiodoc > a[j+1].fiodoc then
+    begin
+      str1 := a[j].typeapp;
+      str2 := a[j].fiodoc;
+      str3 := a[j].fiopat;
+      str4 := a[j].d;
+      str5 := a[j].timefinish;
+      str6 := a[j].timestart;
+      a[j].typeapp := a[j+1].typeapp;
+      a[j].fiodoc := a[j+1].fiodoc;
+      a[j].fiopat := a[j+1].fiopat;
+      a[j].d := a[j+1].d;
+      a[j].timefinish := a[j+1].timefinish;
+      a[j].timestart := a[j+1].timestart;
+      a[j+1].typeapp:=str1;
+      a[j+1].fiodoc:=str2;
+      a[j+1].fiopat:=str3;
+      a[j+1].d:=str4;
+      a[j+1].timefinish:=str5;
+      a[j+1].timestart:=str6;
+    end;
+  end;
+    end
+end;
+
+Procedure SortFIOPatient(var p: appointments; var a: appointmentArr);
+var j, i: integer;
+  str1, str2, str3: string;
+  str4: date_type;
+  str5, str6: time_type;
+begin
+      for i:=1 to nmax-1 do
+      begin
+  {Внутренний цикл уже перебирает элементы и сравнивает между собой.}
+  for j:=1 to nmax-i do
+  begin
+    {Если элемент, больше следующего, то меняем местами.}
+    if a[j].fiopat > a[j+1].fiopat then
+    begin
+      str1 := a[j].typeapp;
+      str2 := a[j].fiodoc;
+      str3 := a[j].fiopat;
+      str4 := a[j].d;
+      str5 := a[j].timefinish;
+      str6 := a[j].timestart;
+      a[j].typeapp := a[j+1].typeapp;
+      a[j].fiodoc := a[j+1].fiodoc;
+      a[j].fiopat := a[j+1].fiopat;
+      a[j].d := a[j+1].d;
+      a[j].timefinish := a[j+1].timefinish;
+      a[j].timestart := a[j+1].timestart;
+      a[j+1].typeapp:=str1;
+      a[j+1].fiodoc:=str2;
+      a[j+1].fiopat:=str3;
+      a[j+1].d:=str4;
+      a[j+1].timefinish:=str5;
+      a[j+1].timestart:=str6;
+    end;
+  end;
+    end
+end;
+
+procedure SortFirstTable(var Key: char; var x, y: integer;
+    {Процедура для передвижения и выбора места записи}
+  var StringNumber, RowsNumber, pagenumber, itemPage, itemPageMax: integer;
+  var p: appointments; var a: appointmentArr);
+ {Key-код нажатия клавиши
+  x,y-координаты}
+  var
+    i, CountMax: integer;
+  begin
+    x := HomeX;       //начальная позиция X
+    y := HomeY;       //начальная позиция Y
+    gotoxy(x, y);
+    StringNumber := one;
+    RowsNumber := one;
+    CountMax := 2;
+    TextAttr := TableColorUnSelected_item;
+    gotoxy(one, twentyseven);
+    write('выбурите сортировка 1 - тип приема 2 -  пациент 3 - врач ');
+      Key := readkey;
+
+        Key := readkey;
+        case Key of
+          chr(49):  //1   сортировака по типу приема
+          begin
+          SortTypeApp(p,a);
+          end;
+          chr(50):  //2 сортировака по Фио пациент
+          begin
+          SortFIOPatient(p,a);
+          end;
+          chr(51):  //3  ссортировака по Фио врача
+          begin
+          SortFIODoctor(p,a);
+          end;
+        end;
+    x := HomeX;
+    y := HomeY;
+  end;
+
   procedure MenuFirstTable(var Key: char; var x, y: integer;
     {Процедура для передвижения и выбора места записи}
   var StringNumber, RowsNumber, pagenumber, itemPage, itemPageMax: integer;
@@ -2499,9 +2939,10 @@ procedure ViewSecondTableNotNull(var a2: doctorTypeArr; var itemPage, itemPageMa
     MenuFirstTable(Key, x, y, StringNumber, RowsNumber, pagenumber,
       itemPage, itemPageMax, p, a, p2, a2);
           end;
-          chr(60):  //F2 - Изменить значение
+          chr(60):  //F2   - сортировать
           begin
-            ChangeappointmentArr(p, a);
+            SortFirstTable(Key, x, y, StringNumber, RowsNumber, pagenumber,
+      itemPage, itemPageMax, p, a);
             clrscr;
             ViewFirstTable(a, itemPage, itemPageMax);
     FirstFrameTable;
@@ -2557,165 +2998,6 @@ procedure ViewSecondTableNotNull(var a2: doctorTypeArr; var itemPage, itemPageMa
             FirstFrameTable;
             MenuFirstTable(Key, x, y, StringNumber, RowsNumber, pagenumber,
       itemPage, itemPageMax, p, a, p2, a2);
-          end;
-        end;
-      end
-      else
-      if Key = chr(13) then
-      begin  // нажата клавиша <Enter>
-        if (RowsNumber = 6) and (StringNumber in [one..stringmax]) then
-        begin
-          gotoxy(x, y);
-          i := (StringNumber + itempage) - one;
-          with a[i] do
-          begin
-            if fiodoc = '' then
-            begin
-              gotoxy(one, twentyseven);
-              Write(
-                ' Перед тем как изменять значение, введите его через F2 ');
-              gotoxy(x, y);
-            end
-            else
-            begin
-              gotoxy(one, twentyseven);
-              clreol;
-              TestFioDoc(fiodoc, ' Введите ФИО врача: ');
-              gotoxy(one, twentyeight);
-              Write(
-                ' Обновите таблицу путем выхода через esc и входом обратно');
-              gotoxy(x, y);
-            end;
-          end;
-        end
-        else
-        if (RowsNumber = 5) and (StringNumber in [one..stringmax]) then
-        begin
-          gotoxy(x, y);
-          i := (StringNumber + itempage) - one;
-          with a[i] do
-          begin
-            if fiopat = '' then
-            begin
-              gotoxy(one, twentyseven);
-              Write(
-                ' Перед тем как изменять значение, введите его через F2 ');
-              gotoxy(x, y);
-            end
-            else
-            begin
-              gotoxy(one, twentyseven);
-              clreol;
-              Testfiopat(fiopat, ' Введите ФИО пациента: ');
-              gotoxy(one, twentyeight);
-              Write(
-                ' Обновите таблицу путем выхода через esc и входом обратно');
-              gotoxy(x, y);
-            end;
-          end;
-        end
-        else
-        if (RowsNumber = 4) and (StringNumber in [one..stringmax]) then
-        begin
-          gotoxy(x, y);
-          i := (StringNumber + itempage) - one;
-          with a[i] do
-          begin
-            if typeapp = '' then
-            begin
-              gotoxy(one, twentyseven);
-              Write(
-                ' Перед тем как изменять значение, введите его через F2 ');
-              gotoxy(x, y);
-            end
-            else
-            begin
-              gotoxy(one, twentyseven);
-              clreol;
-              Testtypeapp(typeapp, ' Введите тип приема: ');
-              gotoxy(one, twentyeight);
-              Write(
-                ' Обновите таблицу путем выхода через esc и входом обратно');
-              gotoxy(x, y);
-            end;
-          end;
-        end
-        else
-        if (RowsNumber = 3) and (StringNumber in [one..stringmax]) then
-        begin
-          gotoxy(x, y);
-          i := (StringNumber + itempage) - one;
-          with a[i] do
-          begin
-            if (timestart.hour <> 0) and (timestart.minute <> 0) then
-            begin
-              gotoxy(one, twentyseven);
-              clreol;
-              TestTime(timestart);
-              gotoxy(one, twentyeight);
-              Write(
-                ' Обновите таблицу путем выхода через esc и входом обратно');
-              gotoxy(x, y);
-            end
-            else
-            begin
-              gotoxy(one, twentyseven);
-              Write(
-                ' Перед тем как изменять значение, введите его через F2 ');
-              gotoxy(x, y);
-            end;
-          end;
-        end
-        else
-        if (RowsNumber = 2) and (StringNumber in [one..stringmax]) then
-        begin
-          gotoxy(x, y);
-          i := (StringNumber + itempage) - one;
-          with a[i] do
-          begin
-            if (timefinish.hour <> 0) and (timefinish.minute <> 0) then
-            begin
-              gotoxy(one, twentyseven);
-              clreol;
-              TestTime(timefinish);
-              gotoxy(one, twentyeight);
-              Write(
-                ' Обновите таблицу путем выхода через esc и входом обратно');
-              gotoxy(x, y);
-            end
-            else
-            begin
-              gotoxy(one, twentyseven);
-              Write(
-                ' Перед тем как изменять значение, введите его через F2 ');
-              gotoxy(x, y);
-            end;
-          end;
-        end
-        else
-        if (RowsNumber = 1) and (StringNumber in [one..stringmax]) then
-        begin
-          gotoxy(x, y);
-          i := (StringNumber + itempage) - one;
-          with a[i] do
-          begin
-            if (d.day <> 0) and (d.month <> 0) and (d.year <> 0) then
-            begin
-              gotoxy(one, twentyseven);
-              clreol;
-              TestDate(d);
-              gotoxy(one, twentyeight);
-              Write(
-                ' Обновите таблицу путем выхода через esc и входом обратно');
-              gotoxy(x, y);
-            end
-            else
-            begin
-              gotoxy(one, twentyseven);
-              Write(
-                ' Перед тем как изменять значение, введите его через F2 ');
-              gotoxy(x, y);
-            end;
           end;
         end;
       end
@@ -2813,14 +3095,6 @@ procedure ViewSecondTableNotNull(var a2: doctorTypeArr; var itemPage, itemPageMa
             MenuSecondTable(Key, x, y, StringNumber, RowsNumber, pagenumber,
       itemPage, itemPageMax, p2, a2);
           end;
-          chr(60):  //F2 - Изменить значение
-          begin
-            ChangeappointmentArr(p, a);
-            ViewSecondTable(a2, itemPage, itemPageMax);
-            SecondFrameTable;
-            MenuSecondTable(Key, x, y, StringNumber, RowsNumber, pagenumber,
-      itemPage, itemPageMax, p2, a2);
-          end;
           chr(61):  //F3 - Удаление значения
           begin
             gotoxy(one, 60);
@@ -2828,7 +3102,7 @@ procedure ViewSecondTableNotNull(var a2: doctorTypeArr; var itemPage, itemPageMa
               'Выберете номер одного элемента, который вы желаете удалить: ');
             gotoxy(1, 60);
             clreol;
-            //DeleteappointmentArr(p2, a2, number);
+            DeleteDoctorArr(p2, a2, number);
             ViewSecondTable(a2, itemPage, itemPageMax);
             SecondFrameTable;
             MenuSecondTable(Key, x, y, StringNumber, RowsNumber, pagenumber,
@@ -2865,170 +3139,22 @@ procedure ViewSecondTableNotNull(var a2: doctorTypeArr; var itemPage, itemPageMa
           chr(8): //BackSpace - удаление по стрелкам
           begin
             i := (StringNumber + itempage) - one;
-            //DeleteappointmentArr(p2, a2, i);
-            gotoxy(one, twentyeight);
-            Write(
-              ' Обновите таблицу путем выхода через esc и входом обратно');
+            DeleteDoctorArr(p2, a2, i);
+            ViewSecondTable(a2, itemPage, itemPageMax);
+            SecondFrameTable;
             gotoxy(x, y);
           end;
-        end;
-      end
-      else
-      if Key = chr(13) then
-      begin  // нажата клавиша <Enter>
-        if (RowsNumber = 6) and (StringNumber in [one..stringmax]) then
-        begin
-          gotoxy(x, y);
-          i := (StringNumber + itempage) - one;
-          with a[i] do
-          begin
-            //if fiodoc = '' then
-            //begin
-            //  gotoxy(one, twentyseven);
-            //  Write(' Перед тем как изменять значение, введите его через F2 ');
-            //  gotoxy(x, y);
-            //end
-            //else
-            //begin
-            //  gotoxy(one, twentyseven);
-            //  clreol;
-            //  //TestFioDoc(fiodoc,' Введите ФИО врача: ');
-            //  gotoxy(one, twentyeight);
-            //  Write(' Обновите таблицу путем выхода через esc и входом обратно');
-            //  gotoxy(x, y);
-            //end;
-          end;
-        end
-        else
-        if (RowsNumber = 5) and (StringNumber in [one..stringmax]) then
-        begin
-          gotoxy(x, y);
-          i := (StringNumber + itempage) - one;
-          with a[i] do
-          begin
-            //if fiopat = '' then
-            //begin
-            //  gotoxy(one, twentyseven);
-            //  Write(' Перед тем как изменять значение, введите его через F2 ');
-            //  gotoxy(x, y);
-            //end
-            //else
-            //begin
-            //  gotoxy(one, twentyseven);
-            //  clreol;
-            //  //Testfiopat(fiopat, ' Введите ФИО пациента: ');
-            //  gotoxy(one, twentyeight);
-            //  Write(' Обновите таблицу путем выхода через esc и входом обратно');
-            //  gotoxy(x, y);
-          end;
-        end;
-      end
-      else
-      if (RowsNumber = 4) and (StringNumber in [one..stringmax]) then
-      begin
-        gotoxy(x, y);
-        i := (StringNumber + itempage) - one;
-        with a[i] do
-        begin
-          //if typeapp = '' then
-          //begin
-          //  gotoxy(one, twentyseven);
-          //  Write(' Перед тем как изменять значение, введите его через F2 ');
-          //  gotoxy(x, y);
-          //end
-          //else
-          //begin
-          //  gotoxy(one, twentyseven);
-          //  clreol;
-          //  //Testtypeapp(typeapp, ' Введите тип приема: ');
-          //  gotoxy(one, twentyeight);
-          //  Write(' Обновите таблицу путем выхода через esc и входом обратно');
-          //  gotoxy(x, y);
-          //end;
-        end;
-      end
-      else
-      if (RowsNumber = 3) and (StringNumber in [one..stringmax]) then
-      begin
-        gotoxy(x, y);
-        i := (StringNumber + itempage) - one;
-        with a[i] do
-        begin
-          //if (timestart.hour <> 0) and (timestart.minute <> 0) then
-          //begin
-          //  gotoxy(one, twentyseven);
-          //  clreol;
-          //  //TestTime(timestart);
-          //  gotoxy(one, twentyeight);
-          //  Write(' Обновите таблицу путем выхода через esc и входом обратно');
-          //  gotoxy(x, y);
-          //end
-          //else
-          //begin
-          //  gotoxy(one, twentyseven);
-          //  Write(' Перед тем как изменять значение, введите его через F2 ');
-          //  gotoxy(x, y);
-          //end;
-        end;
-      end
-      else
-      if (RowsNumber = 2) and (StringNumber in [one..stringmax]) then
-      begin
-        gotoxy(x, y);
-        i := (StringNumber + itempage) - one;
-        with a[i] do
-        begin
-          //if (timefinish.hour <> 0) and (timefinish.minute <> 0) then
-          //begin
-          //  gotoxy(one, twentyseven);
-          //  clreol;
-          //  //TestTime(timefinish);
-          //  gotoxy(one, twentyeight);
-          //  Write(' Обновите таблицу путем выхода через esc и входом обратно');
-          //  gotoxy(x, y);
-          //end
-          //else
-          //begin
-          //  gotoxy(one, twentyseven);
-          //  Write(' Перед тем как изменять значение, введите его через F2 ');
-          //  gotoxy(x, y);
-          //end;
-        end;
-      end
-      else
-      if (RowsNumber = 1) and (StringNumber in [one..stringmax]) then
-      begin
-        gotoxy(x, y);
-        i := (StringNumber + itempage) - one;
-        with a[i] do
-        begin
-          //    if (d.day <> 0) and (d.month <> 0) and (d.year <> 0) then
-          //    begin
-          //      gotoxy(one, twentyseven);
-          //      clreol;
-          ////      TestDate(d);
-          //      gotoxy(one, twentyeight);
-          //      Write(' Обновите таблицу путем выхода через esc и входом обратно');
-          //      gotoxy(x, y);
-          //    end
-          //    else
-          //    begin
-          //      gotoxy(one, twentyseven);
-          //      Write(' Перед тем как изменять значение, введите его через F2 ');
-          //      gotoxy(x, y);
-          //    end;
-          //end;
         end;
       end
       else
       if key = chr(8) then //BackSpace - удаление по стрелкам
       begin
         i := (StringNumber + itempage) - 1;
-          //DeleteappointmentArr(p2, a2, i);
+          DeleteDoctorArr(p2, a2, i);
         ViewSecondTable(a2, itemPage, itemPageMax);
-    SecondFrameTable;
-    MenuSecondTable(Key, x, y, StringNumber, RowsNumber, pagenumber,
-      itemPage, itemPageMax, p2, a2);
+        SecondFrameTable;
+        MenuSecondTable(Key, x, y, StringNumber, RowsNumber, pagenumber,
+         itemPage, itemPageMax, p2, a2);
       end;
     until Key = chr(9);//twentyseven
     x := HomeX;
@@ -3107,19 +3233,9 @@ procedure ViewSecondTableNotNull(var a2: doctorTypeArr; var itemPage, itemPageMa
           end;
           chr(59):  //F1   - Добавить значение
           begin
-
             WriteaPacientArr(p3, a3);
-            gotoxy(one, twentyeight);
-            Write(
-              ' Обновите таблицу путем выхода через esc и входом обратно');
-            gotoxy(x, y);
-          end;
-          chr(60):  //F2 - Изменить значение
-          begin
-            //ChangeappointmentArr(p, a);
-            //gotoxy(one, twentyeight);
-            //Write(' Обновите таблицу путем выхода через esc и входом обратно');
-            //gotoxy(x, y);
+            ViewThirdTable(a3, itemPage, itemPageMax);
+              ThirdFrameTable;
           end;
           chr(61):  //F3 - Удаление значения
           begin
@@ -3127,12 +3243,12 @@ procedure ViewSecondTableNotNull(var a2: doctorTypeArr; var itemPage, itemPageMa
             TestNumber(number, CountMax,
               'Выберете номер одного элемента, который вы желаете удалить: ');
             gotoxy(1, 60);
-            clreol;
-            //DeleteappointmentArr(p, a, number);
-            gotoxy(1, 60);
-            Write(
-              ' Обновите таблицу путем выхода через esc и входом обратно');
-            gotoxy(x, y);
+            DeletePatientArr(p3, a3, number);
+            clrscr;
+            ViewThirdTable(a3, itemPage, itemPageMax);
+            ThirdFrameTable;
+            MenuThirdTable(Key, x, y, StringNumber, RowsNumber, pagenumber,
+                itemPage, itemPageMax, p3, a3);
           end;
           chr(81):  //PageDown - Переход по страницам (след.)
           begin
@@ -3165,276 +3281,27 @@ procedure ViewSecondTableNotNull(var a2: doctorTypeArr; var itemPage, itemPageMa
           chr(8): //BackSpace - удаление по стрелкам
           begin
             i := (StringNumber + itempage) - one;
-            //DeleteappointmentArr(p, a, i);
-            gotoxy(one, twentyeight);
-            Write(
-              ' Обновите таблицу путем выхода через esc и входом обратно');
-            gotoxy(x, y);
+            DeletePatientArr(p3, a3, i);
+            ViewThirdTable(a3, itemPage, itemPageMax);
+            ThirdFrameTable;
+            gotoxy(x, y)
           end;
-        end;
-      end
-      else
-      if Key = chr(13) then
-      begin  // нажата клавиша <Enter>
-        if (RowsNumber = 6) and (StringNumber in [one..stringmax]) then
-        begin
-          gotoxy(x, y);
-          i := (StringNumber + itempage) - one;
-          with a[i] do
-          begin
-            //if fiodoc = '' then
-            //begin
-            //  gotoxy(one, twentyseven);
-            //  Write(' Перед тем как изменять значение, введите его через F2 ');
-            //  gotoxy(x, y);
-            //end
-            //else
-            //begin
-            //  gotoxy(one, twentyseven);
-            //  clreol;
-            //  //TestFioDoc(fiodoc,' Введите ФИО врача: ');
-            //  gotoxy(one, twentyeight);
-            //  Write(' Обновите таблицу путем выхода через esc и входом обратно');
-            //  gotoxy(x, y);
-            //end;
-          end;
-        end
-        else
-        if (RowsNumber = 5) and (StringNumber in [one..stringmax]) then
-        begin
-          gotoxy(x, y);
-          i := (StringNumber + itempage) - one;
-          with a[i] do
-          begin
-            //if fiopat = '' then
-            //begin
-            //  gotoxy(one, twentyseven);
-            //  Write(' Перед тем как изменять значение, введите его через F2 ');
-            //  gotoxy(x, y);
-            //end
-            //else
-            //begin
-            //  gotoxy(one, twentyseven);
-            //  clreol;
-            //  //Testfiopat(fiopat, ' Введите ФИО пациента: ');
-            //  gotoxy(one, twentyeight);
-            //  Write(' Обновите таблицу путем выхода через esc и входом обратно');
-            //  gotoxy(x, y);
-          end;
-        end;
-      end
-      else
-      if (RowsNumber = 4) and (StringNumber in [one..stringmax]) then
-      begin
-        gotoxy(x, y);
-        i := (StringNumber + itempage) - one;
-        with a[i] do
-        begin
-          //if typeapp = '' then
-          //begin
-          //  gotoxy(one, twentyseven);
-          //  Write(' Перед тем как изменять значение, введите его через F2 ');
-          //  gotoxy(x, y);
-          //end
-          //else
-          //begin
-          //  gotoxy(one, twentyseven);
-          //  clreol;
-          //  //Testtypeapp(typeapp, ' Введите тип приема: ');
-          //  gotoxy(one, twentyeight);
-          //  Write(' Обновите таблицу путем выхода через esc и входом обратно');
-          //  gotoxy(x, y);
-          //end;
-        end;
-      end
-      else
-      if (RowsNumber = 3) and (StringNumber in [one..stringmax]) then
-      begin
-        gotoxy(x, y);
-        i := (StringNumber + itempage) - one;
-        with a[i] do
-        begin
-          //if (timestart.hour <> 0) and (timestart.minute <> 0) then
-          //begin
-          //  gotoxy(one, twentyseven);
-          //  clreol;
-          //  //TestTime(timestart);
-          //  gotoxy(one, twentyeight);
-          //  Write(' Обновите таблицу путем выхода через esc и входом обратно');
-          //  gotoxy(x, y);
-          //end
-          //else
-          //begin
-          //  gotoxy(one, twentyseven);
-          //  Write(' Перед тем как изменять значение, введите его через F2 ');
-          //  gotoxy(x, y);
-          //end;
-        end;
-      end
-      else
-      if (RowsNumber = 2) and (StringNumber in [one..stringmax]) then
-      begin
-        gotoxy(x, y);
-        i := (StringNumber + itempage) - one;
-        with a[i] do
-        begin
-          //if (timefinish.hour <> 0) and (timefinish.minute <> 0) then
-          //begin
-          //  gotoxy(one, twentyseven);
-          //  clreol;
-          //  //TestTime(timefinish);
-          //  gotoxy(one, twentyeight);
-          //  Write(' Обновите таблицу путем выхода через esc и входом обратно');
-          //  gotoxy(x, y);
-          //end
-          //else
-          //begin
-          //  gotoxy(one, twentyseven);
-          //  Write(' Перед тем как изменять значение, введите его через F2 ');
-          //  gotoxy(x, y);
-          //end;
-        end;
-      end
-      else
-      if (RowsNumber = 1) and (StringNumber in [one..stringmax]) then
-      begin
-        gotoxy(x, y);
-        i := (StringNumber + itempage) - one;
-        with a[i] do
-        begin
-          //    if (d.day <> 0) and (d.month <> 0) and (d.year <> 0) then
-          //    begin
-          //      gotoxy(one, twentyseven);
-          //      clreol;
-          ////      TestDate(d);
-          //      gotoxy(one, twentyeight);
-          //      Write(' Обновите таблицу путем выхода через esc и входом обратно');
-          //      gotoxy(x, y);
-          //    end
-          //    else
-          //    begin
-          //      gotoxy(one, twentyseven);
-          //      Write(' Перед тем как изменять значение, введите его через F2 ');
-          //      gotoxy(x, y);
-          //    end;
-          //end;
         end;
       end
       else
       if key = chr(8) then //BackSpace - удаление по стрелкам
       begin
         i := (StringNumber + itempage) - 1;
-        //  DeleteappointmentArr(p, a, i);
-        gotoxy(1, twentyeight);
-        Write(' Обновите таблицу путем выхода через esc и входом обратно');
-        gotoxy(x, y);
+          DeletePatientArr(p3, a3, i);
+        ViewThirdTable(a3, itemPage, itemPageMax);
+              ThirdFrameTable;
+              MenuThirdTable(Key, x, y, StringNumber, RowsNumber, pagenumber,
+                itemPage, itemPageMax, p3, a3);
       end;
     until Key = chr(9);//twentyseven
     x := HomeX;
     y := HomeY;
   end;
-
-{
-
-  //Меню сортировки
-  procedure SortArrow(var Key: char; var SortItem: integer; var x, y: integer);
-   //Процедура стрелочек в меню сортировки
-  begin
-    Key := ReadKey;
-    case Key of
-      chr(80):   //стрелка вниз
-        if SortItem < MaxSortItem then
-        begin
-          gotoxy(x, y + SortItem - one);
-          Write(SortArray[SortItem]);
-          Inc(SortItem);
-          TextAttr := ColorSelected_item;
-          gotoxy(x, y + SortItem - one);
-          Write(SortArray[SortItem]);
-          TextAttr := ColorUnselected_item;
-        end;
-      chr(72):   //стрелка вверх
-      begin
-        if SortItem > one then
-        begin
-          gotoxy(x, y + SortItem - one);
-          Write(SortArray[SortItem]);
-          SortItem := SortItem - one;
-          TextAttr := ColorSelected_item;
-          gotoxy(x, y + SortItem - one);
-          Write(SortArray[SortItem]);
-          TextAttr := ColorUnselected_item;
-        end;
-      end;
-    end;
-  end;
-
-  procedure SortScr; //вывод меню сортировки на экран
-  var
-    i: integer;
-  begin
-    ClrScr;
-    x := homeY;
-    y := homeY;
-    for i := one to MaxSortItem do
-    begin
-      gotoxy(x, y + i - 1);
-      Write(SortArray[i]);
-    end;
-    TextAttr := ColorSelected_item;
-    GoToXY(x, y + SortItem - one);
-    Write(SortArray[SortItem]); //выделение строки меню
-    TextAttr := ColorUnSelected_item;
-  end;
-
-  procedure SortMenuControl(var Key: char; var SortItem: integer; var x, y: integer);
-  begin
-    repeat
-      Key := ReadKey;
-      if Key = char(0) then //Передает расширенный код
-      begin
-        SortArrow(Key, SortItem, x, y);
-      end
-      else
-      if Key = chr(13) then  //Enter
-      begin
-        case SortItem of
-          1:
-          begin
-            Sortlastname(a);
-            ViewFirstTable(a, itemPage, itemPageMax);
-          end;
-          2:
-          begin
-            Sortlvl(a);
-            ViewFirstTable(a, itemPage, itemPageMax);
-          end;
-          3:
-          begin
-            Sortmark(a);
-            ViewFirstTable(a, itemPage, itemPageMax);
-          end;
-          4:
-          begin
-            Sortfirstname(a);
-            ViewFirstTable(a, itemPage, itemPageMax);
-          end;
-          5:
-          begin
-            SortDate(a);
-            ViewFirstTable(a, itemPage, itemPageMax);
-          end;
-          6:
-          begin
-            key := chr(twentyseven); //выход
-          end;
-        end;
-        SortScr;
-      end;
-    until (key = chr(twentyseven)); //27 - Esc
-  end;
- }
-  //меню
 
   procedure MenuToScr; //вывод меню на экран
   var
@@ -3556,28 +3423,6 @@ procedure ViewSecondTableNotNull(var a2: doctorTypeArr; var itemPage, itemPageMa
       itemPage, itemPageMax, p3, a3);
   end;
 
-  {
-  procedure item6;   //Сортировки в таблице
-  begin
-    SortArray[1] := ' Сортировка по Имени';
-    SortArray[2] := #10' Сортировка по Оценке';
-    SortArray[3] := #10#10' Сортировка по Уровню';
-    SortArray[4] := #10#10#10' Сортировка по Фамилии';
-    SortArray[5] := #10#10#10#10' Сортировка по Дате';
-    SortArray[6] := #10#10#10#10#10' Выход ';
-    SortItem := one;
-    ClrScr;
-    SortScr;
-    SortMenuControl(Key, SortItem, x, y);
-  end;
-
-  procedure item7;   //Поиск по таблице
-  begin
-    ClrScr;
-    SearchName(p, a);
-    RKEnter(Enter);
-  end;
-  }
   procedure item8;   //Справка по программе
   begin
     ClrScr;
@@ -3639,7 +3484,7 @@ procedure ViewSecondTableNotNull(var a2: doctorTypeArr; var itemPage, itemPageMa
           3: item3;
           4: item4;
           5: item5;
-          6: ;//item6;
+          6: ;
           7: ;//item7;
           8: item8;
           9: key := chr(9);{выход}    //twentyseven
@@ -3656,10 +3501,9 @@ begin
   menu[3] := #10#10'  1. Таблица Записи на прием';
   menu[4] := #10#10#10'  2. Таблица Врачи ';
   menu[5] := #10#10#10#10'  3. Таблица Пациенты  ';
-  menu[6] := #10#10#10#10#10'  Сортировки в таблице ';
-  menu[7] := #10#10#10#10#10#10'  Поиск по программе ';
-  menu[8] := #10#10#10#10#10#10#10'  Инструкция ';
-  menu[9] := #10#10#10#10#10#10#10#10'  Выход ';
+  menu[6] := #10#10#10#10#10#10'  Поиск по программе ';
+  menu[7] := #10#10#10#10#10#10#10'  Инструкция ';
+  menu[8] := #10#10#10#10#10#10#10#10'  Выход ';
   item := one;
   x := homey;
   y := homey;
